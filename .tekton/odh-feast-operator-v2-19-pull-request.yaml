@@ -4,17 +4,19 @@ metadata:
   annotations:
     build.appstudio.openshift.io/repo: https://github.com/red-hat-data-services/feast?rev={{revision}}
     build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
-    pipelinesascode.tekton.dev/cancel-in-progress: "false"
+    pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
-    pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch
-      == "rhoai-2.19"
+    pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch
+      == "rhoai-2.19" && ( "infra/feast-operator/***".pathChanged() || ".tekton/odh-feast-operator-v2-19-pull-request.yaml".pathChanged()
+      || "Dockerfiles/Dockerfile.feast-operator.konflux".pathChanged() )
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rhoai-v2-19
     appstudio.openshift.io/component: odh-feast-operator-v2-19
     pipelines.appstudio.openshift.io/type: build
-  name: odh-feast-operator-v2-19-on-push
+  name: odh-feast-operator-v2-19-on-pull-request
   namespace: rhoai-tenant
 spec:
   params:
@@ -23,7 +25,9 @@ spec:
   - name: revision
     value: '{{revision}}'
   - name: output-image
-    value: quay.io/rhoai/odh-feast-operator-rhel8:{{revision}}
+    value: quay.io/rhoai/odh-feast-operator-rhel8:on-pr-{{revision}}
+  - name: image-expires-after
+    value: 5d
   - name: dockerfile
     value: Dockerfiles/Dockerfile.feast-operator.konflux
   - name: path-context
