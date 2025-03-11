@@ -30,7 +30,7 @@ spec:
   - name: path-context
     value: "sdk/python/feast/infra/feature_servers/multicloud"
   - name: prefetch-input
-    value: [{"type": "pip", "path": "sdk/python/requirements", "requirements_files": ["py3.11-ci-requirements.txt"], "allow_binary": "false"}]
+    value: [{"type": "pip", "path": "sdk/python/requirements", "requirements_files": ["py3.11-requirements.txt"], "allow_binary": "false"}]
   pipelineSpec:
     description: |
       This pipeline is ideal for building container images from a Containerfile while maintaining trust after pipeline customization.
