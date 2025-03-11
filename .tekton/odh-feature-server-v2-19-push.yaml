@@ -9,7 +9,7 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-cel-expression: |
       event == "push" && target_branch == "rhoai-2.19" 
-      && ( "sdk/python/feast/infra/feature_servers/multicloud/**".pathChanged() || ".tekton/odh-feast-server-v2-19-push.yaml".pathChanged() || "Dockerfiles/Dockerfile.feature-server.konflux".pathChanged())
+      && ( "sdk/python/feast/infra/feature_servers/multicloud/**".pathChanged() || ".tekton/odh-feature-server-v2-19-push.yaml".pathChanged() || "Dockerfiles/Dockerfile.feature-server.konflux".pathChanged())
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rhoai-v2-19
@@ -30,7 +30,7 @@ spec:
   - name: path-context
     value: "sdk/python/feast/infra/feature_servers/multicloud"
   - name: prefetch-input
-    value: [{"type": "pip", "path": ".", "requirements_files": ["requirements.txt"], "allow_binary": "true"}]
+    value: [{"type": "pip", "path": "sdk/python/feast/infra/feature_servers/multicloud", "requirements_files": ["requirements.txt"], "allow_binary": "false"}]
   pipelineSpec:
     description: |
       This pipeline is ideal for building container images from a Containerfile while maintaining trust after pipeline customization.
