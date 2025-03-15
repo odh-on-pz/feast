@@ -58,7 +58,7 @@ cassandra = ["cassandra-driver>=3.24.0,<4"]
 couchbase = ["couchbase==4.3.2", "couchbase-columnar==1.0.0"]
 delta = ["deltalake"]
 docling = ["docling>=2.23.0"]
-duckdb = ["ibis-framework[duckdb]>=9.0.0,<10"]
+duckdb = ["ibis-framework[duckdb]>=10.3.1,<11"]
 elasticsearch = ["elasticsearch>=8.13.0"]
 faiss = ["faiss-cpu>=1.7.0,<2"]
 gcp = [
@@ -81,7 +81,7 @@ grpcio = [
 hazelcast = ["hazelcast-python-client>=5.1"]
 hbase = ["happybase>=1.2.0,<3"]
 ibis = [
-    "ibis-framework>=9.0.0,<10",
+    "ibis-framework>=10.3.1,<11",
     "ibis-substrait>=4.0.0",
 ]
 ikv = [
@@ -89,7 +89,7 @@ ikv = [
 ]
 k8s = ["kubernetes<=20.13.0"]
 milvus = ["pymilvus"]
-mssql = ["ibis-framework[mssql]>=9.0.0,<10"]
+mssql = ["ibis-framework[mssql]>=10.3.1,<11"]
 mysql = ["pymysql", "types-PyMySQL"]
 opentelemetry = ["prometheus_client", "psutil"]
 spark = ["pyspark>=3.0.0,<4"]
