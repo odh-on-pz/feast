@@ -109,7 +109,7 @@ sqlite_vec = ["sqlite-vec==v0.1.6"]
 
 ci = [
     "build",
-    "virtualenv==20.23.0",
+    "virtualenv==20.29.3",
     "cryptography>=43.0,<44",
     "ruff>=0.8.0",
     "mypy-protobuf>=3.1",
@@ -149,7 +149,7 @@ ci = [
     "types-requests<2.31.0",
     "types-setuptools",
     "types-tabulate",
-    "virtualenv<20.24.2",
+    "virtualenv<20.29.4",
     "feast[aws, azure, cassandra, couchbase, delta, docling, duckdb, elasticsearch, faiss, gcp, ge, go, grpcio, hazelcast, hbase, ibis, ikv, k8s, milvus, mssql, mysql, opentelemetry, spark, trino, postgres, pytorch, qdrant, redis, singlestore, snowflake, sqlite_vec]"
 ]
 nlp = ["feast[docling, milvus, pytorch]"]
