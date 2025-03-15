@@ -167,7 +167,7 @@ feast = "feast.cli:cli"
 
 [build-system]
 requires = [
-  "pybindgen==0.22.0",
+  "pybindgen==0.22.1",
   "setuptools>=60",
   "setuptools_scm>=6.2",
   "sphinx!=4.0.0",
