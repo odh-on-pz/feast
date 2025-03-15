@@ -87,7 +87,7 @@ ibis = [
 ikv = [
     "ikvpy>=0.0.36",
 ]
-k8s = ["kubernetes<=20.13.0"]
+k8s = ["kubernetes<=32.0.1"]
 milvus = ["pymilvus"]
 mssql = ["ibis-framework[mssql]>=9.0.0,<10"]
 mysql = ["pymysql", "types-PyMySQL"]
