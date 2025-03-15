@@ -187,7 +187,7 @@ CI_REQUIRED = (
         "psutil==5.9.0",
         "py>=1.11.0",  # https://github.com/pytest-dev/pytest/issues/10420
         "pytest>=6.0.0,<8",
-        "pytest-asyncio<=0.24.0",
+        "pytest-asyncio<=0.25.3",
         "pytest-cov",
         "pytest-xdist",
         "pytest-benchmark>=3.4.1,<4",
