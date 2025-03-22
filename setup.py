@@ -147,7 +147,7 @@ DOCLING_REQUIRED = ["docling>=2.23.0"]
 
 ELASTICSEARCH_REQUIRED = ["elasticsearch>=8.13.0"]
 
-SINGLESTORE_REQUIRED = ["singlestoredb<1.8.0"]
+SINGLESTORE_REQUIRED = ["singlestoredb<1.12.3"]
 
 COUCHBASE_REQUIRED = [
     "couchbase==4.3.2",
