@@ -2,7 +2,7 @@ module github.com/feast-dev/feast
 
 go 1.22.0
 
-toolchain go1.22.5
+toolchain go1.24.1
 
 require (
 	github.com/apache/arrow/go/v17 v17.0.0
