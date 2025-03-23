@@ -14,7 +14,7 @@ require (
 	github.com/redis/go-redis/v9 v9.6.1
 	github.com/rs/zerolog v1.33.0
 	github.com/spaolacci/murmur3 v1.1.0
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 	google.golang.org/grpc v1.67.0
 	google.golang.org/protobuf v1.34.2
 )
