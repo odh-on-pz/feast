@@ -54,8 +54,12 @@ build: protos build-java build-docker
 # formerly install-python-ci-dependencies-uv-venv
 # editable install
 install-python-dependencies-dev:
-	uv pip sync sdk/python/requirements/py$(PYTHON_VERSION)-ci-requirements.txt
+	uv pip sync --require-hashes sdk/python/requirements/py$(PYTHON_VERSION)-ci-requirements.txt
 	uv pip install --no-deps -e .
+
+install-python-dependencies-minimal:
+	uv pip sync --require-hashes sdk/python/requirements/py$(PYTHON_VERSION)-minimal-requirements.txt
+	uv pip install --no-deps -e .[minimal]
 
 # Python SDK - system
 # the --system flag installs dependencies in the global python context
@@ -81,16 +85,28 @@ lock-python-dependencies-all:
 	# Remove all existing requirements because we noticed the lock file is not always updated correctly.
 	# Removing and running the command again ensures that the lock file is always up to date.
 	rm -rf sdk/python/requirements/* 2>/dev/null || true
-
+	pixi run --environment $(call get_env_name,3.11) --manifest-path infra/scripts/pixi/pixi.toml \
+		"uv pip compile -p 3.11 --no-strip-extras setup.py --extra addtl-sources \
+		--generate-hashes --output-file sdk/python/requirements/py3.11-addtl-sources-requirements.txt"
+	pixi run --environment $(call get_env_name,3.11) --manifest-path infra/scripts/pixi/pixi.toml \
+		"uv pip compile -p 3.11 --no-strip-extras setup.py --extra pandas-build \
+		--generate-hashes --output-file sdk/python/requirements/py3.11-pandas-requirements.txt"
+	pixi run --environment $(call get_env_name,3.11) --manifest-path infra/scripts/pixi/pixi.toml \
+		"uv pip compile -p 3.11 --no-strip-extras setup.py --extra minimal-sdist-build \
+		--no-emit-package milvus-lite \
+		--no-emit-package psycopg-binary \
+		--output-file sdk/python/requirements/py3.11-sdist-requirements.txt"
 	$(foreach ver,$(PYTHON_VERSIONS),\
 		pixi run --environment $(call get_env_name,$(ver)) --manifest-path infra/scripts/pixi/pixi.toml \
-			"uv pip compile -p $(ver) --system --no-strip-extras setup.py \
-			--output-file sdk/python/requirements/py$(ver)-requirements.txt" && \
+			"uv pip compile -p $(ver) --no-strip-extras setup.py --extra minimal \
+			--generate-hashes --output-file sdk/python/requirements/py$(ver)-minimal-requirements.txt" && \
 		pixi run --environment $(call get_env_name,$(ver)) --manifest-path infra/scripts/pixi/pixi.toml \
-			"uv pip compile -p $(ver) --system --no-strip-extras setup.py --extra ci \
-			--output-file sdk/python/requirements/py$(ver)-ci-requirements.txt" && \
+			"uv pip compile -p $(ver) --no-strip-extras setup.py --extra ci \
+			--generate-hashes --output-file sdk/python/requirements/py$(ver)-ci-requirements.txt" && \
+		pixi run --environment $(call get_env_name,$(ver)) --manifest-path infra/scripts/pixi/pixi.toml \
+			"uv pip compile -p $(ver) --no-strip-extras setup.py \
+			--generate-hashes --output-file sdk/python/requirements/py$(ver)-requirements.txt" && \
 	) true
-
 
 compile-protos-python:
 	python infra/scripts/generate_protos.py
@@ -246,7 +262,28 @@ test-python-universal-postgres-offline:
 				not gcs_registry and \
 				not s3_registry and \
 				not test_snowflake and \
- 				not test_universal_types" \
+ 				not test_spark" \
+ 			sdk/python/tests
+
+ test-python-universal-clickhouse-offline:
+	PYTHONPATH='.' \
+		FULL_REPO_CONFIGS_MODULE=sdk.python.feast.infra.offline_stores.contrib.clickhouse_repo_configuration \
+		PYTEST_PLUGINS=sdk.python.feast.infra.offline_stores.contrib.clickhouse_offline_store.tests \
+		python -m pytest -v -n 8 --integration \
+ 			-k "not test_historical_retrieval_with_validation and \
+				not test_historical_features_persisting and \
+ 				not test_universal_cli and \
+ 				not test_go_feature_server and \
+ 				not test_feature_logging and \
+				not test_reorder_columns and \
+				not test_logged_features_validation and \
+				not test_lambda_materialization_consistency and \
+				not test_offline_write and \
+				not test_push_features_to_offline_store and \
+				not gcs_registry and \
+				not s3_registry and \
+				not test_snowflake and \
+ 				not test_spark" \
  			sdk/python/tests
 
 test-python-universal-postgres-online:
@@ -528,18 +565,6 @@ build-feature-server-java-docker:
 		-t $(REGISTRY)/feature-server-java:$(VERSION) \
 		-f java/infra/docker/feature-server/Dockerfile --load .
 
-push-feast-helm-operator-docker:
-	cd infra/feast-helm-operator && \
-	IMAGE_TAG_BASE=$(REGISTRY)/feast-helm-operator \
-	VERSION=$(VERSION) \
-	$(MAKE) docker-push
-
-build-feast-helm-operator-docker:
-	cd infra/feast-helm-operator && \
-	IMAGE_TAG_BASE=$(REGISTRY)/feast-helm-operator \
-	VERSION=$(VERSION) \
-	$(MAKE) docker-build
-
 push-feast-operator-docker:
 	cd infra/feast-operator && \
 	IMAGE_TAG_BASE=$(REGISTRY)/feast-operator \
@@ -611,11 +636,13 @@ build-helm-docs:
 	cd ${ROOT_DIR}/infra/charts/feast-feature-server; helm-docs
 
 # Web UI
+# Note: these require node and yarn to be installed
 
-# Note: requires node and yarn to be installed
 build-ui:
 	cd $(ROOT_DIR)/sdk/python/feast/ui && yarn upgrade @feast-dev/feast-ui --latest && yarn install && npm run build --omit=dev
 
+format-ui:
+	cd $(ROOT_DIR)/ui && NPM_TOKEN= yarn install && NPM_TOKEN= yarn format
 
 
 # Go SDK & embedded

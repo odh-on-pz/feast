@@ -164,9 +164,11 @@ GO_REQUIRED = ["cffi>=1.15.0"]
 MILVUS_REQUIRED = ["pymilvus"]
 
 TORCH_REQUIRED = [
-    "torch>=2.2.2",
+    "torch==2.2.2",
     "torchvision>=0.17.2",
 ]
+
+CLICKHOUSE_REQUIRED = ["clickhouse-connect>=0.7.19"]
 
 CI_REQUIRED = (
     [
@@ -197,7 +199,7 @@ CI_REQUIRED = (
         "pytest-mock==1.10.4",
         "pytest-env",
         "Sphinx>4.0.0,<7",
-        "testcontainers==4.8.2",
+        "testcontainers==4.9.0",
         "python-keycloak==4.2.2",
         "pre-commit<3.3.2",
         "assertpy==1.1",
@@ -241,6 +243,7 @@ CI_REQUIRED = (
     + MILVUS_REQUIRED
     + DOCLING_REQUIRED
     + TORCH_REQUIRED
+    + CLICKHOUSE_REQUIRED
 )
 NLP_REQUIRED = (
     DOCLING_REQUIRED
@@ -323,6 +326,7 @@ setup(
         "docling": DOCLING_REQUIRED,
         "pytorch": TORCH_REQUIRED,
         "nlp": NLP_REQUIRED,
+        "clickhouse": CLICKHOUSE_REQUIRED,
     },
     include_package_data=True,
     license="Apache",
@@ -334,7 +338,7 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.9",
     ],
-    entry_points={"console_scripts": ["feast=feast.cli:cli"]},
+    entry_points={"console_scripts": ["feast=feast.cli.cli:cli"]},
     use_scm_version=use_scm_version,
     setup_requires=[
         "pybindgen==0.22.0",  # TODO do we need this?
