@@ -101,7 +101,7 @@ mysql = ["pymysql", "types-PyMySQL"]
 opentelemetry = ["prometheus_client", "psutil"]
 spark = ["pyspark>=3.0.0,<4"]
 trino = ["trino>=0.305.0,<0.400.0", "regex"]
-postgres = ["psycopg[binary,pool]==3.2.5"]
+postgres = ["psycopg[binary,pool]==3.2.6"]
 pytorch = ["torch==2.2.2", "torchvision>=0.17.2"]
 qdrant = ["qdrant-client>=1.12.0"]
 redis = [
