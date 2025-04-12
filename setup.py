@@ -39,7 +39,7 @@ REQUIRED = [
     "mmh3",
     "numpy>=1.22,<2",
     "pandas>=1.4.3,<3",
-    "pyarrow<18.1.0",
+    "pyarrow<19.0.2",
     "pydantic>=2.0.0",
     "pygments>=2.12.0,<3",
     "PyYAML>=5.4.0,<7",
