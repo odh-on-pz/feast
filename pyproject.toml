@@ -181,7 +181,7 @@ numpy-build = [
 pandas-build = [
     "pandas==2.2.3",
     "meson-python==0.13.1",
-    "meson==1.2.1",
+    "meson==1.7.2",
     "oldest-supported-numpy>=2022.8.16,<2023.8.3",
     "versioneer[toml]==0.29",
 ]
@@ -209,7 +209,7 @@ minimal-sdist-build = [
     "setuptools-rust>=1.4.0",
     "rpds-py==0.23.1",
     "types_psutil<7.0.0.20250401",
-    "meson<1.7.2",
+    "meson<1.7.3",
 
     # sqlalchemy[mypy] dep
     "greenlet!=0.4.17",
