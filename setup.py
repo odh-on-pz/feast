@@ -173,7 +173,7 @@ CLICKHOUSE_REQUIRED = ["clickhouse-connect>=0.7.19"]
 CI_REQUIRED = (
     [
         "build",
-        "virtualenv==20.23.0",
+        "virtualenv==20.30.0",
         "cryptography>=43.0,<44",
         "ruff>=0.8.0",
         "mypy-protobuf>=3.1",
@@ -213,7 +213,7 @@ CI_REQUIRED = (
         "types-requests<2.31.0",
         "types-setuptools",
         "types-tabulate",
-        "virtualenv<20.24.2",
+        "virtualenv<20.30.1",
     ]
     + GCP_REQUIRED
     + REDIS_REQUIRED
