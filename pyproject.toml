@@ -147,7 +147,7 @@ ci = [
     "pre-commit<3.3.2",
     "assertpy==1.1",
     "pip-tools",
-    "pybindgen==0.22.0",
+    "pybindgen==0.22.1",
     "types-protobuf~=3.19.22",
     "python-dateutil==2.9.0",
     "types-python-dateutil",
@@ -198,7 +198,7 @@ minimal-sdist-build = [
     "feast[minimal]",
     "feast[numpy-build]",
     "feast[ibis]",
-    "pybindgen==0.22.0",
+    "pybindgen==0.22.1",
     "setuptools-scm[toml]>=8",
     "sphinx!=4.0.0",
     "wheel==0.45.1",
@@ -243,7 +243,7 @@ feast = "feast.cli.cli:cli"
 
 [build-system]
 requires = [
-  "pybindgen==0.22.0",
+  "pybindgen==0.22.1",
   # https://amitylearning.vercel.app/?question=git-1742419854670&update=1742342400027
   "setuptools>=60,<77",
   "setuptools_scm>=6.2",
