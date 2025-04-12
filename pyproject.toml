@@ -208,7 +208,7 @@ minimal-sdist-build = [
     "pdm-backend",
     "setuptools-rust>=1.4.0",
     "rpds-py==0.23.1",
-    "types_psutil<7.0.0.20250401",
+    "types_psutil<7.0.0.20250402",
     "meson<1.7.2",
 
     # sqlalchemy[mypy] dep
