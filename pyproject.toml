@@ -188,7 +188,7 @@ pandas-build = [
 addtl-sources = [
     # python-dateutil build deps
     "python-dateutil==2.9.0",
-    "setuptools-scm<8.0",
+    "setuptools-scm<8.3",
     "feast[setuptools]",
 
     # aiohappyeyeballs build dep
