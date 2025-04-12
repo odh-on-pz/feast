@@ -149,7 +149,7 @@ ci = [
     "pip-tools",
     "pybindgen==0.22.0",
     "types-protobuf~=3.19.22",
-    "python-dateutil==2.9.0",
+    "python-dateutil==2.9.0.post0",
     "types-python-dateutil",
     "types-pytz",
     "types-PyYAML",
@@ -187,7 +187,7 @@ pandas-build = [
 ]
 addtl-sources = [
     # python-dateutil build deps
-    "python-dateutil==2.9.0",
+    "python-dateutil==2.9.0.post0",
     "setuptools-scm<8.0",
     "feast[setuptools]",
 
