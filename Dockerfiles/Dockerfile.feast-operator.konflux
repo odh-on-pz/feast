@@ -28,3 +28,11 @@ COPY --from=builder /opt/app-root/src/manager .
 USER 65532:65532
 
 ENTRYPOINT ["/manager"]
+
+LABEL com.redhat.component="odh-feast-operator" \
+      name="odh-feast-operator-rhel8" \
+      description="odh-feast-operator" \
+      summary="odh-feast-operator" \
+      io.openshift.expose-services="65532" \
+      io.k8s.display-name="odh-feast-operator" \
+      io.k8s.description="odh-feast-operator"
