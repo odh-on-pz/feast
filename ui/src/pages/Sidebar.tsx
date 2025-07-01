@@ -12,6 +12,8 @@ import { FeatureViewIcon } from "../graphics/FeatureViewIcon";
 import { FeatureServiceIcon } from "../graphics/FeatureServiceIcon";
 import { DatasetIcon } from "../graphics/DatasetIcon";
 import { FeatureIcon } from "../graphics/FeatureIcon";
+import { HomeIcon } from "../graphics/HomeIcon";
+import { PermissionsIcon } from "../graphics/PermissionsIcon";
 
 const SideNav = () => {
   const registryUrl = useContext(RegistryPathContext);
@@ -65,9 +67,22 @@ const SideNav = () => {
   const sideNav: React.ComponentProps<typeof EuiSideNav>["items"] = [
     {
       name: "Home",
-      id: htmlIdGenerator("basicExample")(),
-      renderItem: (props) => <Link {...props} to={`${baseUrl}/`} />,
+      id: htmlIdGenerator("home")(),
+      icon: <EuiIcon type={HomeIcon} />,
+      renderItem: (props) => <Link {...props} to={`${baseUrl}`} />,
+      isSelected: useMatchSubpath(`${baseUrl}$`),
+    },
+    {
+      name: "Resources",
+      id: htmlIdGenerator("resources")(),
       items: [
+        {
+          name: "Lineage",
+          id: htmlIdGenerator("lineage")(),
+          icon: <EuiIcon type="graphApp" />,
+          renderItem: (props) => <Link {...props} to={`${baseUrl}/lineage`} />,
+          isSelected: useMatchSubpath(`${baseUrl}/lineage`),
+        },
         {
           name: dataSourcesLabel,
           id: htmlIdGenerator("dataSources")(),
@@ -115,6 +130,24 @@ const SideNav = () => {
           icon: <EuiIcon type={DatasetIcon} />,
           renderItem: (props) => <Link {...props} to={`${baseUrl}/data-set`} />,
           isSelected: useMatchSubpath(`${baseUrl}/data-set`),
+        },
+        {
+          name: "Data Labeling",
+          id: htmlIdGenerator("dataLabeling")(),
+          icon: <EuiIcon type="documentEdit" color="#006BB4" />,
+          renderItem: (props) => (
+            <Link {...props} to={`${baseUrl}/data-labeling`} />
+          ),
+          isSelected: useMatchSubpath(`${baseUrl}/data-labeling`),
+        },
+        {
+          name: "Permissions",
+          id: htmlIdGenerator("permissions")(),
+          icon: <EuiIcon type={PermissionsIcon} />,
+          renderItem: (props) => (
+            <Link {...props} to={`${baseUrl}/permissions`} />
+          ),
+          isSelected: useMatchSubpath(`${baseUrl}/permissions`),
         },
       ],
     },

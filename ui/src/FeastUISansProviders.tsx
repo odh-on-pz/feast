@@ -1,10 +1,10 @@
 import React from "react";
 
-import "@elastic/eui/dist/eui_theme_light.css";
 import "./index.css";
 
 import { Routes, Route } from "react-router-dom";
 import { EuiProvider, EuiErrorBoundary } from "@elastic/eui";
+import { ThemeProvider, useTheme } from "./contexts/ThemeContext";
 
 import ProjectOverviewPage from "./pages/ProjectOverviewPage";
 import Layout from "./pages/Layout";
@@ -22,11 +22,15 @@ import FeatureServiceInstance from "./pages/feature-services/FeatureServiceInsta
 import DataSourceInstance from "./pages/data-sources/DataSourceInstance";
 import RootProjectSelectionPage from "./pages/RootProjectSelectionPage";
 import DatasetInstance from "./pages/saved-data-sets/DatasetInstance";
+import DocumentLabelingPage from "./pages/document-labeling/DocumentLabelingPage";
+import PermissionsIndex from "./pages/permissions/Index";
+import LineageIndex from "./pages/lineage/Index";
 import NoProjectGuard from "./components/NoProjectGuard";
 
 import TabsRegistryContext, {
   FeastTabsRegistryInterface,
 } from "./custom-tabs/TabsRegistryContext";
+import CurlGeneratorTab from "./pages/feature-views/CurlGeneratorTab";
 import FeatureFlagsContext, {
   FeatureFlags,
 } from "./contexts/FeatureFlagsContext";
@@ -70,10 +74,56 @@ const FeastUISansProviders = ({
         };
 
   return (
-    <EuiProvider colorMode="light">
+    <ThemeProvider>
+      <FeastUISansProvidersInner
+        basename={basename}
+        projectListContext={projectListContext}
+        feastUIConfigs={feastUIConfigs}
+      />
+    </ThemeProvider>
+  );
+};
+
+const FeastUISansProvidersInner = ({
+  basename,
+  projectListContext,
+  feastUIConfigs,
+}: {
+  basename: string;
+  projectListContext: ProjectsListContextInterface;
+  feastUIConfigs?: FeastUIConfigs;
+}) => {
+  const { colorMode } = useTheme();
+
+  return (
+    <EuiProvider colorMode={colorMode}>
       <EuiErrorBoundary>
         <TabsRegistryContext.Provider
-          value={feastUIConfigs?.tabsRegistry || {}}
+          value={{
+            RegularFeatureViewCustomTabs: [
+              {
+                label: "CURL Generator",
+                path: "curl-generator",
+                Component: CurlGeneratorTab,
+              },
+              ...(feastUIConfigs?.tabsRegistry?.RegularFeatureViewCustomTabs ||
+                []),
+            ],
+            OnDemandFeatureViewCustomTabs:
+              feastUIConfigs?.tabsRegistry?.OnDemandFeatureViewCustomTabs || [],
+            StreamFeatureViewCustomTabs:
+              feastUIConfigs?.tabsRegistry?.StreamFeatureViewCustomTabs || [],
+            FeatureServiceCustomTabs:
+              feastUIConfigs?.tabsRegistry?.FeatureServiceCustomTabs || [],
+            FeatureCustomTabs:
+              feastUIConfigs?.tabsRegistry?.FeatureCustomTabs || [],
+            DataSourceCustomTabs:
+              feastUIConfigs?.tabsRegistry?.DataSourceCustomTabs || [],
+            EntityCustomTabs:
+              feastUIConfigs?.tabsRegistry?.EntityCustomTabs || [],
+            DatasetCustomTabs:
+              feastUIConfigs?.tabsRegistry?.DatasetCustomTabs || [],
+          }}
         >
           <FeatureFlagsContext.Provider
             value={feastUIConfigs?.featureFlags || {}}
@@ -121,6 +171,12 @@ const FeastUISansProviders = ({
                       path="data-set/:datasetName/*"
                       element={<DatasetInstance />}
                     />
+                    <Route
+                      path="data-labeling/"
+                      element={<DocumentLabelingPage />}
+                    />
+                    <Route path="permissions/" element={<PermissionsIndex />} />
+                    <Route path="lineage/" element={<LineageIndex />} />
                   </Route>
                 </Route>
                 <Route path="*" element={<NoMatch />} />
