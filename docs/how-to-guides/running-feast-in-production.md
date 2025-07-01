@@ -88,7 +88,7 @@ def materialize(data_interval_start=None, data_interval_end=None):
     provider="aws",
     offline_store="file",
     online_store=DynamoDBOnlineStoreConfig(region="us-west-2"),
-    entity_key_serialization_version=2
+    entity_key_serialization_version=3
   )
   store = FeatureStore(config=repo_config)
   # Option 1: materialize just one feature view
@@ -207,6 +207,8 @@ feature_vector = fs.get_online_features(
 
 To deploy a Feast feature server on Kubernetes, you should use the included [feast-operator](../../infra/feast-operator).
 
+{% embed url="https://www.youtube.com/playlist?list=PLPzVNzik7rsAN-amQLZckd0so3cIr7blX" %}
+
 **Basic steps**
 1. Install [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 2. Install the Operator
@@ -238,11 +240,11 @@ metadata:
 spec:
   feastProject: my_project
 ```
-{% hint style="success" %} More advanced FeatureStore CR examples can be found in the feast-operator [samples directory](../../infra/feast-operator/config/samples). {% endhint %}
+> _More advanced FeatureStore CR examples can be found in the feast-operator [samples directory](../../infra/feast-operator/config/samples)._
 
 For first-time Operator users, it may be a good exercise to try the [Feast Operator Quickstart](../../examples/operator-quickstart). The quickstart will demonstrate some of the Operator's built-in features, e.g. git repos, `feast apply` jobs, etc.
 
-{% hint style="success" %} Important note: [Scaling a Feature Store Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#scaling-a-deployment) should only be done if the configured data store(s) will support it.
+{% hint style="success" %} Important note: Scaling a Feature Store Deployment should only be done if the configured data store(s) will support it.
 
 Please check the how-to guide for some specific recommendations on [how to scale Feast](./scaling-feast.md). {% endhint %}
 

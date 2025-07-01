@@ -15,10 +15,21 @@ import {
 } from "reactflow";
 import "reactflow/dist/style.css";
 import dagre from "dagre";
-import { EuiPanel, EuiTitle, EuiSpacer, EuiLoadingSpinner } from "@elastic/eui";
+import {
+  EuiPanel,
+  EuiTitle,
+  EuiSpacer,
+  EuiLoadingSpinner,
+  EuiToolTip,
+} from "@elastic/eui";
 import { FEAST_FCO_TYPES } from "../parsers/types";
 import { EntityRelation } from "../parsers/parseEntityRelationships";
 import { feast } from "../protos";
+import { useTheme } from "../contexts/ThemeContext";
+import {
+  formatPermissions,
+  getEntityPermissions,
+} from "../utils/permissionUtils";
 
 const edgeAnimationStyle = `
   @keyframes dashdraw {
@@ -52,6 +63,7 @@ interface NodeData {
   label: string;
   type: FEAST_FCO_TYPES;
   metadata: any;
+  permissions?: any[]; // Add permissions field
 }
 
 const getNodeColor = (type: FEAST_FCO_TYPES) => {
@@ -106,6 +118,7 @@ const CustomNode = ({ data }: { data: NodeData }) => {
   const lightColor = getLightNodeColor(data.type);
   const icon = getNodeIcon(data.type);
   const [isHovered, setIsHovered] = useState(false);
+  const hasPermissions = data.permissions && data.permissions.length > 0;
 
   const handleClick = () => {
     let path;
@@ -127,6 +140,10 @@ const CustomNode = ({ data }: { data: NodeData }) => {
     }
     navigate(path);
   };
+
+  const permissionsTooltipContent = hasPermissions
+    ? formatPermissions(data.permissions)
+    : "No permissions set";
 
   return (
     <div
@@ -164,6 +181,30 @@ const CustomNode = ({ data }: { data: NodeData }) => {
         >
           View Details
         </div>
+      )}
+
+      {/* Permissions indicator */}
+      {hasPermissions && (
+        <EuiToolTip
+          position="top"
+          content={<pre style={{ margin: 0 }}>{permissionsTooltipContent}</pre>}
+        >
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              backgroundColor: "#5a7be0",
+              color: "white",
+              padding: "2px 8px",
+              fontSize: "12px",
+              borderBottomRightRadius: "6px",
+              zIndex: 5,
+            }}
+          >
+            P
+          </div>
+        </EuiToolTip>
       )}
 
       <Handle
@@ -369,6 +410,7 @@ const getLayoutedElements = (
   };
 };
 const Legend = () => {
+  const { colorMode } = useTheme();
   const types = [
     { type: FEAST_FCO_TYPES.featureService, label: "Feature Service" },
     { type: FEAST_FCO_TYPES.featureView, label: "Feature View" },
@@ -376,21 +418,36 @@ const Legend = () => {
     { type: FEAST_FCO_TYPES.dataSource, label: "Data Source" },
   ];
 
+  const isDarkMode = colorMode === "dark";
+  const backgroundColor = isDarkMode ? "#1D1E24" : "white";
+  const borderColor = isDarkMode ? "#343741" : "#ddd";
+  const textColor = isDarkMode ? "#DFE5EF" : "#333";
+  const boxShadow = isDarkMode
+    ? "0 2px 5px rgba(0,0,0,0.3)"
+    : "0 2px 5px rgba(0,0,0,0.1)";
+
   return (
     <div
       style={{
         position: "absolute",
         left: 10,
         top: 10,
-        background: "white",
-        border: "1px solid #ddd",
+        background: backgroundColor,
+        border: `1px solid ${borderColor}`,
         borderRadius: 5,
         padding: 10,
         zIndex: 10,
-        boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+        boxShadow: boxShadow,
       }}
     >
-      <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 5 }}>
+      <div
+        style={{
+          fontSize: 14,
+          fontWeight: 600,
+          marginBottom: 5,
+          color: textColor,
+        }}
+      >
         Legend
       </div>
       {types.map((item) => (
@@ -414,7 +471,7 @@ const Legend = () => {
           >
             {getNodeIcon(item.type)}
           </div>
-          <div style={{ fontSize: 12 }}>{item.label}</div>
+          <div style={{ fontSize: 12, color: textColor }}>{item.label}</div>
         </div>
       ))}
     </div>
@@ -424,6 +481,7 @@ const Legend = () => {
 const registryToFlow = (
   objects: feast.core.Registry,
   relationships: EntityRelation[],
+  permissions?: any[],
 ) => {
   const nodes: Node[] = [];
   const edges: Edge[] = [];
@@ -436,6 +494,13 @@ const registryToFlow = (
         label: fs.spec?.name,
         type: FEAST_FCO_TYPES.featureService,
         metadata: fs,
+        permissions: permissions
+          ? getEntityPermissions(
+              permissions,
+              FEAST_FCO_TYPES.featureService,
+              fs.spec?.name,
+            )
+          : [],
       },
       position: { x: 0, y: 0 },
     });
@@ -449,6 +514,13 @@ const registryToFlow = (
         label: fv.spec?.name,
         type: FEAST_FCO_TYPES.featureView,
         metadata: fv,
+        permissions: permissions
+          ? getEntityPermissions(
+              permissions,
+              FEAST_FCO_TYPES.featureView,
+              fv.spec?.name,
+            )
+          : [],
       },
       position: { x: 0, y: 0 },
     });
@@ -462,6 +534,13 @@ const registryToFlow = (
         label: odfv.spec?.name,
         type: FEAST_FCO_TYPES.featureView,
         metadata: odfv,
+        permissions: permissions
+          ? getEntityPermissions(
+              permissions,
+              FEAST_FCO_TYPES.featureView,
+              odfv.spec?.name,
+            )
+          : [],
       },
       position: { x: 0, y: 0 },
     });
@@ -475,6 +554,13 @@ const registryToFlow = (
         label: sfv.spec?.name,
         type: FEAST_FCO_TYPES.featureView,
         metadata: sfv,
+        permissions: permissions
+          ? getEntityPermissions(
+              permissions,
+              FEAST_FCO_TYPES.featureView,
+              sfv.spec?.name,
+            )
+          : [],
       },
       position: { x: 0, y: 0 },
     });
@@ -488,6 +574,13 @@ const registryToFlow = (
         label: entity.spec?.name,
         type: FEAST_FCO_TYPES.entity,
         metadata: entity,
+        permissions: permissions
+          ? getEntityPermissions(
+              permissions,
+              FEAST_FCO_TYPES.entity,
+              entity.spec?.name,
+            )
+          : [],
       },
       position: { x: 0, y: 0 },
     });
@@ -518,6 +611,13 @@ const registryToFlow = (
         label: dsName,
         type: FEAST_FCO_TYPES.dataSource,
         metadata: { name: dsName },
+        permissions: permissions
+          ? getEntityPermissions(
+              permissions,
+              FEAST_FCO_TYPES.dataSource,
+              dsName,
+            )
+          : [],
       },
       position: { x: 0, y: 0 },
     });
@@ -572,12 +672,16 @@ interface RegistryVisualizationProps {
   registryData: feast.core.Registry;
   relationships: EntityRelation[];
   indirectRelationships: EntityRelation[];
+  filterNode?: { type: FEAST_FCO_TYPES; name: string };
+  permissions?: any[]; // Add permissions field
 }
 
 const RegistryVisualization: React.FC<RegistryVisualizationProps> = ({
   registryData,
   relationships,
   indirectRelationships,
+  filterNode,
+  permissions,
 }) => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -592,9 +696,53 @@ const RegistryVisualization: React.FC<RegistryVisualizationProps> = ({
       setLoading(true);
 
       // Only include indirect relationships if the toggle is on
-      const relationshipsToShow = showIndirectRelationships
+      let relationshipsToShow = showIndirectRelationships
         ? [...relationships, ...indirectRelationships]
         : relationships;
+
+      // Filter relationships based on filterNode if provided
+      if (filterNode) {
+        const connectedNodes = new Set<string>();
+
+        const filterNodeId = `${getNodePrefix(filterNode.type)}-${filterNode.name}`;
+        connectedNodes.add(filterNodeId);
+
+        // Function to recursively find all connected nodes
+        const findConnectedNodes = (nodeId: string, isDownstream: boolean) => {
+          relationshipsToShow.forEach((rel) => {
+            const sourceId = `${getNodePrefix(rel.source.type)}-${rel.source.name}`;
+            const targetId = `${getNodePrefix(rel.target.type)}-${rel.target.name}`;
+
+            if (
+              isDownstream &&
+              sourceId === nodeId &&
+              !connectedNodes.has(targetId)
+            ) {
+              connectedNodes.add(targetId);
+              findConnectedNodes(targetId, isDownstream);
+            }
+
+            if (
+              !isDownstream &&
+              targetId === nodeId &&
+              !connectedNodes.has(sourceId)
+            ) {
+              connectedNodes.add(sourceId);
+              findConnectedNodes(sourceId, isDownstream);
+            }
+          });
+        };
+
+        findConnectedNodes(filterNodeId, true);
+
+        findConnectedNodes(filterNodeId, false);
+
+        relationshipsToShow = relationshipsToShow.filter((rel) => {
+          const sourceId = `${getNodePrefix(rel.source.type)}-${rel.source.name}`;
+          const targetId = `${getNodePrefix(rel.target.type)}-${rel.target.name}`;
+          return connectedNodes.has(sourceId) && connectedNodes.has(targetId);
+        });
+      }
 
       // Filter out invalid relationships
       const validRelationships = relationshipsToShow.filter((rel) => {
@@ -605,6 +753,7 @@ const RegistryVisualization: React.FC<RegistryVisualizationProps> = ({
       const { nodes: initialNodes, edges: initialEdges } = registryToFlow(
         registryData,
         validRelationships,
+        permissions,
       );
 
       const { nodes: layoutedNodes, edges: layoutedEdges } =
@@ -625,6 +774,7 @@ const RegistryVisualization: React.FC<RegistryVisualizationProps> = ({
     indirectRelationships,
     showIndirectRelationships,
     showIsolatedNodes,
+    filterNode,
     setNodes,
     setEdges,
   ]);
