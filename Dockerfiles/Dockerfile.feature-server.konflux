@@ -10,6 +10,5 @@ LABEL com.redhat.component="odh-feature-server" \
       name="odh-feature-server-rhel9" \
       description="odh-feature-server" \
       summary="odh-feature-server" \
-      io.openshift.expose-services="" \
       io.k8s.display-name="odh-feature-server" \
       io.k8s.description="odh-feature-server"
