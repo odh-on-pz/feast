@@ -1,17 +1,21 @@
 #!/bin/bash
-set -e
 
 PYTHON_VERSION=3.11
+WORKDIR=$(pwd)
+CMAKE_VERSION=3.30.5
+CMAKE_REQUIRED_VERSION=3.30.5
+
 
 echo "Installing build tools..."
 dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
-dnf install -y gcc-toolset-13 make cmake ninja-build libomp-devel clang \
+dnf install -y gcc-toolset-13 make cmake ninja-build libomp-devel \
                git python${PYTHON_VERSION} python${PYTHON_VERSION}-devel python${PYTHON_VERSION}-pip \
                openssl openssl-devel zlib-devel libuuid-devel 
 source /opt/rh/gcc-toolset-13/enable
+export CXX=/opt/rh/gcc-toolset-13/root/usr/bin/g++
 
 # Upgrade pip, build tools
-python${PYTHON_VERSION} -m pip install build wheel setuptools ninja pybind11
+python${PYTHON_VERSION} -m pip install build wheel setuptools ninja pybind11 numpy setuptools_scm Cython==3.0.8
 
 mkdir -p /wheelhouse
 
@@ -26,14 +30,13 @@ python${PYTHON_VERSION} -m build --wheel --no-isolation
 cp dist/*.whl /wheelhouse/
 cd ../../..
 
-# grpcio
+grpcio
 echo "Building grpcio..."
 git clone https://github.com/grpc/grpc.git -b v1.62.3
 cd grpc
 git checkout v1.62.3
 git submodule update --init --recursive
 python${PYTHON_VERSION}  -m pip install -r requirements.txt
-export CXX=/opt/rh/gcc-toolset-13/root/usr/bin/g++
 export GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1
 python${PYTHON_VERSION} -m build --wheel --no-isolation
 cp dist/*.whl /wheelhouse/
@@ -50,44 +53,113 @@ dnf config-manager --set-enabled crb
 dnf install -y boost1.78-devel.ppc64le gflags-devel rapidjson-devel.ppc64le re2-devel.ppc64le \
                utf8proc-devel.ppc64le gtest-devel gmock-devel snappy snappy-devel
 
-git clone https://github.com/apache/arrow.git -b apache-arrow-17.0.0
+git clone https://github.com/apache/arrow.git
 cd arrow
 git checkout apache-arrow-17.0.0
 git submodule update --init --recursive
 
-export ARROW_HOME=/usr/local
-export LD_LIBRARY_PATH=$ARROW_HOME/lib64:$LD_LIBRARY_PATH
-export PARQUET_TEST_DATA="${PWD}/cpp/submodules/parquet-testing/data"
-export ARROW_TEST_DATA="${PWD}/testing/data"
-export BUILD_TYPE=release
-export BUNDLE_ARROW_CPP=1
-export CMAKE_PREFIX_PATH=$ARROW_HOME
-
-mkdir -p cpp/build && cd cpp/build
-cmake -DCMAKE_BUILD_TYPE=release \
-      -DCMAKE_INSTALL_PREFIX=$ARROW_HOME \
-      -Dutf8proc_LIB=/usr/lib64/libutf8proc.so \
-      -Dutf8proc_INCLUDE_DIR=/usr/include \
+mkdir -p release && cd release
+cmake -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=/usr/local \
       -DARROW_PYTHON=ON \
       -DARROW_PARQUET=ON \
-      -DARROW_BUILD_TESTS=ON \
-      -DARROW_JEMALLOC=ON \
-      ..
+      -DARROW_ORC=ON \
+      -DARROW_FILESYSTEM=ON \
+      -DARROW_WITH_LZ4=ON \
+      -DARROW_WITH_ZSTD=ON \
+      -DARROW_WITH_SNAPPY=ON \
+      -DARROW_JSON=ON \
+      -DARROW_CSV=ON \
+      -DARROW_DATASET=ON \
+      -DPROTOBUF_PROTOC_EXECUTABLE=/usr/bin/protoc \
+      -DARROW_DEPENDENCY_SOURCE=BUNDLED \
+    ..
 make -j$(nproc)
 make install
-python${PYTHON_VERSION} -m pip install --upgrade pip setuptools wheel numpy setuptools_scm
-python${PYTHON_VERSION} -m pip install Cython==3.0.8
 cd ../../python
-python${PYTHON_VERSION} setup.py build_ext --build-type=$ARROW_BUILD_TYPE --bundle-arrow-cpp bdist_wheel
+export ARROW_BUILD_TYPE=release
+python${PYTHON_VERSION} setup.py build_ext --build-type=$BUILD_TYPE --bundle-arrow-cpp bdist_wheel
 cp dist/*.whl /wheelhouse/
 cd ../../..
 
+
 # # milvus-lite
 echo "Building milvus-lite..."
-git clone --recursive https://github.com/milvus-io/milvus.git -b v2.3.0
-cd milvus
-# build steps
+dnf remove -y gcc-toolset-13
+dnf install -y wget perl openblas-devel cargo gcc gcc-c++ libstdc++-static which libaio \
+               ncurses-devel libtool m4 autoconf automake zlib-devel libffi-devel scl-utils xz
 
-##### Steps ######
+export CC=gcc
+export CXX=g++
+export CXXFLAGS="-std=c++17"
+
+pip install wheel conan==1.64.1 setuptools==70.0.0
+
+echo "installing texinfo"
+wget https://ftp.gnu.org/gnu/texinfo/texinfo-7.1.tar.xz
+tar -xf texinfo-7.1.tar.xz
+cd texinfo-7.1
+./configure
+make -j2
+make install
 cd ..
+
+echo "installing rust 1.73"
+curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain=1.73 -y
+source $HOME/.cargo/env
+rustc --version
+
+echo "installing cmake"
+# Install CMake
+mkdir -p "${WORKDIR}/workspace"
+cd "${WORKDIR}/workspace"
+wget -c https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}.tar.gz
+tar -zxvf cmake-${CMAKE_VERSION}.tar.gz
+rm -rf cmake-${CMAKE_VERSION}.tar.gz
+cd cmake-${CMAKE_VERSION}
+./bootstrap --prefix=/usr/local/cmake --parallel=2 -- -DBUILD_TESTING:BOOL=OFF -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_USE_OPENSSL:BOOL=ON
+make install -j2
+export PATH=/usr/local/cmake/bin:$PATH
+cmake --version
+cd ..
+
+cd $WORKDIR
+git clone https://github.com/milvus-io/milvus-lite
+cd milvus-lite/python
+git checkout v2.4.12
+git submodule update --init --recursive
+
+create_cmake_conanfile()
+{
+    touch /usr/local/cmake/conanfile.py
+    cat <<EOT >> /usr/local/cmake/conanfile.py
+from conans import ConanFile, tools
+class CmakeConan(ConanFile):
+  name = "cmake"
+  package_type = "application"
+  version = "${CMAKE_REQUIRED_VERSION}"
+  description = "CMake, the cross-platform, open-source build system."
+  homepage = "https://github.com/Kitware/CMake"
+  license = "BSD-3-Clause"
+  topics = ("build", "installer")
+  settings = "os", "arch"
+  def package(self):
+    self.copy("*")
+  def package_info(self):
+    self.cpp_info.libs = tools.collect_libs(self)
+EOT
+}
+
+#build the package
+pushd /usr/local/cmake
+create_cmake_conanfile
+conan export-pkg . cmake/${CMAKE_REQUIRED_VERSION}@ -s os="Linux" -s arch="ppc64le" -f
+conan profile update settings.compiler.libcxx=libstdc++11 default
+popd
+export VCPKG_FORCE_SYSTEM_BINARIES=1
+mkdir -p $HOME/.cargo/bin/
+
+python -m build --wheel --no-isolation
+
+cp dist/*.whl /wheelhouse/
 
