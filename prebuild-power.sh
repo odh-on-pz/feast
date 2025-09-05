@@ -5,21 +5,25 @@ WORKDIR=$(pwd)
 CMAKE_VERSION=3.30.5
 CMAKE_REQUIRED_VERSION=3.30.5
 
-
-echo "Installing build tools..."
+# Enable EPEL and install required OS packages
 dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
 dnf install -y gcc-toolset-13 make cmake ninja-build libomp-devel \
                git python${PYTHON_VERSION} python${PYTHON_VERSION}-devel python${PYTHON_VERSION}-pip \
                openssl openssl-devel zlib-devel libuuid-devel 
+
+# Enable GCC toolset
 source /opt/rh/gcc-toolset-13/enable
 export CXX=/opt/rh/gcc-toolset-13/root/usr/bin/g++
 
-# Upgrade pip, build tools
+# Installing Python build dependencies
 python${PYTHON_VERSION} -m pip install build wheel setuptools ninja pybind11 numpy setuptools_scm Cython==3.0.8
 
+# Directory to collect built wheels
 mkdir -p /wheelhouse
 
-################### duckdb #######################
+#######################################################
+# Build DuckDB (Python package)
+#######################################################
 echo "Building duckdb..."
 git clone https://github.com/duckdb/duckdb.git
 cd duckdb
@@ -30,7 +34,9 @@ python${PYTHON_VERSION} -m build --wheel --no-isolation
 cp dist/*.whl /wheelhouse/
 cd ../../..
 
-################### grpcio ########################
+#######################################################
+# Build gRPC  (Python package)
+#######################################################
 echo "Building grpcio..."
 git clone https://github.com/grpc/grpc.git -b v1.62.3
 cd grpc
@@ -42,8 +48,9 @@ python${PYTHON_VERSION} -m build --wheel --no-isolation
 cp dist/*.whl /wheelhouse/
 cd ..
 
-
-################### pyarrow ############################
+#######################################################
+# Build Pyarrow  (Python package)
+#######################################################
 echo "Building pyarrow..."
 dnf install -y https://mirror.stream.centos.org/9-stream/BaseOS/ppc64le/os/Packages/centos-gpg-keys-9.0-24.el9.noarch.rpm \
 https://mirror.stream.centos.org/9-stream/BaseOS/`arch`/os/Packages/centos-stream-repos-9.0-24.el9.noarch.rpm \
@@ -73,6 +80,8 @@ cmake -DCMAKE_BUILD_TYPE=Release \
       -DARROW_JSON=ON \
       -DARROW_CSV=ON \
       -DARROW_DATASET=ON \
+      -DARROW_S3=ON \
+      -DARROW_SUBSTRAIT=ON \
       -DPROTOBUF_PROTOC_EXECUTABLE=/usr/bin/protoc \
       -DARROW_DEPENDENCY_SOURCE=BUNDLED \
     ..
@@ -84,7 +93,9 @@ python${PYTHON_VERSION} setup.py build_ext --build-type=$BUILD_TYPE --bundle-arr
 cp dist/*.whl /wheelhouse/
 cd ../../..
 
-#################### milvus-lite #######################
+#######################################################
+# Build Milvus-Lite  (Python package)
+#######################################################
 echo "Building milvus-lite..."
 dnf remove -y gcc-toolset-13
 dnf install -y wget perl openblas-devel cargo gcc gcc-c++ libstdc++-static which libaio \
@@ -164,6 +175,4 @@ python${PYTHON_VERSION} -m build --wheel --no-isolation
 
 cp dist/*.whl /wheelhouse/
 
-echo "Listing built wheels:"
-ls -lh /wheelhouse
 
