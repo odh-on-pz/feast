@@ -19,7 +19,7 @@ python${PYTHON_VERSION} -m pip install build wheel setuptools ninja pybind11 num
 
 mkdir -p /wheelhouse
 
-# duckdb
+################### duckdb #######################
 echo "Building duckdb..."
 git clone https://github.com/duckdb/duckdb.git
 cd duckdb
@@ -30,19 +30,20 @@ python${PYTHON_VERSION} -m build --wheel --no-isolation
 cp dist/*.whl /wheelhouse/
 cd ../../..
 
-grpcio
+################### grpcio ########################
 echo "Building grpcio..."
 git clone https://github.com/grpc/grpc.git -b v1.62.3
 cd grpc
 git checkout v1.62.3
 git submodule update --init --recursive
-python${PYTHON_VERSION}  -m pip install -r requirements.txt
+python${PYTHON_VERSION} -m pip install -r requirements.txt
 export GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1
 python${PYTHON_VERSION} -m build --wheel --no-isolation
 cp dist/*.whl /wheelhouse/
 cd ..
 
-# pyarrow
+
+################### pyarrow ############################
 echo "Building pyarrow..."
 dnf install -y https://mirror.stream.centos.org/9-stream/BaseOS/ppc64le/os/Packages/centos-gpg-keys-9.0-24.el9.noarch.rpm \
 https://mirror.stream.centos.org/9-stream/BaseOS/`arch`/os/Packages/centos-stream-repos-9.0-24.el9.noarch.rpm \
@@ -58,6 +59,7 @@ cd arrow
 git checkout apache-arrow-17.0.0
 git submodule update --init --recursive
 
+cd cpp
 mkdir -p release && cd release
 cmake -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_INSTALL_PREFIX=/usr/local \
@@ -77,13 +79,12 @@ cmake -DCMAKE_BUILD_TYPE=Release \
 make -j$(nproc)
 make install
 cd ../../python
-export ARROW_BUILD_TYPE=release
+export BUILD_TYPE=release
 python${PYTHON_VERSION} setup.py build_ext --build-type=$BUILD_TYPE --bundle-arrow-cpp bdist_wheel
 cp dist/*.whl /wheelhouse/
 cd ../../..
 
-
-# # milvus-lite
+#################### milvus-lite #######################
 echo "Building milvus-lite..."
 dnf remove -y gcc-toolset-13
 dnf install -y wget perl openblas-devel cargo gcc gcc-c++ libstdc++-static which libaio \
@@ -93,7 +94,7 @@ export CC=gcc
 export CXX=g++
 export CXXFLAGS="-std=c++17"
 
-pip install wheel conan==1.64.1 setuptools==70.0.0
+python${PYTHON_VERSION} -m pip install wheel conan==1.64.1 setuptools==70.0.0
 
 echo "installing texinfo"
 wget https://ftp.gnu.org/gnu/texinfo/texinfo-7.1.tar.xz
@@ -159,7 +160,10 @@ popd
 export VCPKG_FORCE_SYSTEM_BINARIES=1
 mkdir -p $HOME/.cargo/bin/
 
-python -m build --wheel --no-isolation
+python${PYTHON_VERSION} -m build --wheel --no-isolation
 
 cp dist/*.whl /wheelhouse/
+
+echo "Listing built wheels:"
+ls -lh /wheelhouse
 
