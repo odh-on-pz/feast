@@ -13,7 +13,7 @@ RUN if [ "$(uname -m)" = "ppc64le" ]; then \
         /prebuild-power.sh && pip install /wheelhouse/*.whl; \
         echo "Listing built wheels:" && ls -lh /wheelhouse; \
     else \
-        echo "x86 detected, skipping Power prebuild"; \
+        echo "Non-Power architecture detected; skipping Power prebuild"; \
     fi
 
 COPY requirements.txt requirements.txt
