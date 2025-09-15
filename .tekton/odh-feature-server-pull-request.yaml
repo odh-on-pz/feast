@@ -41,7 +41,8 @@ spec:
     value: |
       [
         {
-          "type": "pip", "path": ".",
+          "type": "pip",
+          "path": ".",
           "requirements_files": [
             "sdk/python/feast/infra/feature_servers/multicloud/requirements.txt"
           ],
@@ -53,8 +54,7 @@ spec:
           "allow_binary": "true"
         },
         {
-          "type": "rpm",
-          "lock_file": "sdk/python/feast/infra/feature_servers/multicloud/offline/rpms.lock.yaml"
+          "type": "rpm"
         }
       ]
   - name: build-source-image
