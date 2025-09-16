@@ -54,7 +54,8 @@ spec:
           "allow_binary": "true"
         },
         {
-          "type": "rpm"
+          "type": "rpm",
+          "path": "sdk/python/feast/infra/feature_servers/multicloud/offline"
         }
       ]
   - name: build-source-image
