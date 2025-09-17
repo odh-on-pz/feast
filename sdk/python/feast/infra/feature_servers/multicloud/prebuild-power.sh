@@ -1,4 +1,7 @@
 #!/bin/bash
+set -Eeuo pipefail
+trap 'echo "[prebuild-power] failed at line $LINENO"; exit 1' ERR
+shopt -s dotglob nullglob
 
 PYTHON_VERSION=3.11
 WORKDIR=$(pwd)
@@ -6,7 +9,7 @@ CMAKE_VERSION=3.30.5
 CMAKE_REQUIRED_VERSION=3.30.5
 
 # Enable EPEL and install required OS packages
-dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
 dnf install -y gcc-toolset-13 make cmake ninja-build libomp-devel \
                git python${PYTHON_VERSION} python${PYTHON_VERSION}-devel python${PYTHON_VERSION}-pip \
                openssl openssl-devel zlib-devel libuuid-devel 
@@ -55,7 +58,7 @@ cd ..
 #######################################################
 echo "Building pyarrow..."
 dnf install -y boost1.78-devel.ppc64le gflags-devel rapidjson-devel.ppc64le re2-devel.ppc64le \
-               gtest-devel gmock-devel
+               gtest-devel gmock-devel thrift 
 
 
 # utf8proc installing
@@ -122,7 +125,8 @@ cmake -DCMAKE_BUILD_TYPE=Release \
       -DARROW_DATASET=ON \
       -DARROW_S3=ON \
       -DARROW_SUBSTRAIT=ON \
-      -DPROTOBUF_PROTOC_EXECUTABLE=/usr/bin/protoc \
+      -DProtobuf_SOURCE=BUNDLED \
+      -DThrift_SOURCE=BUNDLED \
       -DARROW_DEPENDENCY_SOURCE=BUNDLED \
     ..
 make -j$(nproc)
