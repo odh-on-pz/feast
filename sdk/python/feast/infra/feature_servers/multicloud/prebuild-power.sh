@@ -9,7 +9,7 @@ CMAKE_VERSION=3.30.5
 CMAKE_REQUIRED_VERSION=3.30.5
 
 # Enable EPEL and install required OS packages
-rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+# rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
 dnf install -y gcc-toolset-13 make cmake ninja-build libomp-devel \
                git python${PYTHON_VERSION} python${PYTHON_VERSION}-devel python${PYTHON_VERSION}-pip \
                openssl openssl-devel zlib-devel libuuid-devel 
