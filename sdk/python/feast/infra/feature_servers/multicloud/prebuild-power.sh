@@ -8,8 +8,8 @@ WORKDIR=$(pwd)
 CMAKE_VERSION=3.30.5
 CMAKE_REQUIRED_VERSION=3.30.5
 
-# Enable EPEL and install required OS packages
-# rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+dnf repolist enabled
+
 dnf install -y gcc-toolset-13 make cmake ninja-build libomp-devel \
                git python${PYTHON_VERSION} python${PYTHON_VERSION}-devel python${PYTHON_VERSION}-pip \
                openssl openssl-devel zlib-devel libuuid-devel 
@@ -57,9 +57,118 @@ cd ..
 # Build Pyarrow  (Python package)
 #######################################################
 echo "Building pyarrow..."
-dnf install -y boost1.78-devel.ppc64le gflags-devel rapidjson-devel.ppc64le re2-devel.ppc64le \
-               gtest-devel gmock-devel thrift 
 
+# rapidjson installing
+git clone https://github.com/Tencent/rapidjson.git
+cd rapidjson
+mkdir build && cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local
+make -j$(nproc)
+make install
+cd $WORKDIR
+
+# gflags installing
+git clone https://github.com/gflags/gflags.git
+cd gflags
+mkdir build && cd build
+cmake ..
+make -j$(nproc)
+make install
+cd $WORKDIR
+
+# boost_cpp installing
+git clone https://github.com/boostorg/boost
+cd boost
+git checkout boost-1.81.0
+git submodule update --init
+
+mkdir Boost_prefix
+export BOOST_PREFIX=$(pwd)/Boost_prefix
+
+INCLUDE_PATH="${BOOST_PREFIX}/include"
+LIBRARY_PATH="${BOOST_PREFIX}/lib"
+
+export CC=$(which gcc)
+export CXX=$(which g++)
+export target_platform=$(uname)-$(uname -m)
+CXXFLAGS="${CXXFLAGS} -fPIC"
+TOOLSET=gcc
+
+ # http://www.boost.org/build/doc/html/bbv2/tasks/crosscompile.html
+cat <<EOF > tools/build/example/site-config.jam
+using ${TOOLSET} : : ${CXX} ;
+EOF
+
+LINKFLAGS="${LINKFLAGS} -L${LIBRARY_PATH}"
+
+CXXFLAGS="$(echo ${CXXFLAGS} | sed 's/ -march=[^ ]*//g' | sed 's/ -mcpu=[^ ]*//g' |sed 's/ -mtune=[^ ]*//g')" \
+CFLAGS="$(echo ${CFLAGS} | sed 's/ -march=[^ ]*//g' | sed 's/ -mcpu=[^ ]*//g' |sed 's/ -mtune=[^ ]*//g')" \
+    CXX=${CXX_FOR_BUILD:-${CXX}} CC=${CC_FOR_BUILD:-${CC}} ./bootstrap.sh \
+    --prefix="${BOOST_PREFIX}" \
+    --without-libraries=python \
+    --with-toolset=${TOOLSET} \
+    --with-icu="${BOOST_PREFIX}" || (cat bootstrap.log; exit 1)
+	 ADDRESS_MODEL=64
+    ARCHITECTURE=power
+	ABI="sysv"
+	 BINARY_FORMAT="elf"
+
+	 export CPU_COUNT=$(nproc)
+
+echo " Building and installing Boost...."
+./b2 -q \
+    variant=release \
+    address-model="${ADDRESS_MODEL}" \
+    architecture="${ARCHITECTURE}" \
+    binary-format="${BINARY_FORMAT}" \
+    abi="${ABI}" \
+    debug-symbols=off \
+    threading=multi \
+    runtime-link=shared \
+    link=shared \
+    toolset=${TOOLSET} \
+    include="${INCLUDE_PATH}" \
+    cxxflags="${CXXFLAGS} -Wno-deprecated-declarations" \
+    linkflags="${LINKFLAGS}" \
+    --layout=system \
+    -j"${CPU_COUNT}" \
+    install
+
+# Remove Python headers as we don't build Boost.Python.
+rm "${BOOST_PREFIX}/include/boost/python.hpp"
+rm -r "${BOOST_PREFIX}/include/boost/python"
+cd $WORKDIR
+
+
+# re2 installing
+git clone http://github.com/google/re2
+cd re2
+git checkout 2022-04-01
+
+git submodule update --init
+
+mkdir re2-prefix
+
+export RE2_PREFIX=$(pwd)/re2-prefix
+
+export CPU_COUNT=`nproc`
+
+mkdir build-cmake
+pushd build-cmake
+
+cmake ${CMAKE_ARGS} -GNinja \
+  -DCMAKE_PREFIX_PATH=$RE2_PREFIX \
+  -DCMAKE_INSTALL_PREFIX="${RE2_PREFIX}" \
+  -DCMAKE_INSTALL_LIBDIR=lib \
+  -DENABLE_TESTING=OFF \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DBUILD_SHARED_LIBS=ON \
+  ..
+echo "Installing re2..."
+  ninja -v install
+  popd
+make -j "${CPU_COUNT}" prefix=${RE2_PREFIX} shared-install
+cd $WORKDIR
 
 # utf8proc installing
 git clone https://github.com/JuliaStrings/utf8proc.git
@@ -126,7 +235,6 @@ cmake -DCMAKE_BUILD_TYPE=Release \
       -DARROW_S3=ON \
       -DARROW_SUBSTRAIT=ON \
       -DProtobuf_SOURCE=BUNDLED \
-      -DThrift_SOURCE=BUNDLED \
       -DARROW_DEPENDENCY_SOURCE=BUNDLED \
     ..
 make -j$(nproc)
