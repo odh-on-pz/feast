@@ -67,6 +67,97 @@ arches:
         name: compiler-rt
         evr: 19.1.7-2.el9
         sourcerpm: llvm-19.1.7-2.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/os/Packages/g/gcc-toolset-13-13.0-2.el9.ppc64le.rpm
+        repoid: ubi-9-for-ppc64le-appstream-rpms
+        size: 11928
+        checksum: sha256:69dfd4994b3a7c7971acacad5518f65380fbd964933481212e0828292769ebaf
+        name: gcc-toolset-13
+        evr: 13.0-2.el9
+        sourcerpm: gcc-toolset-13-13.0-2.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/os/Packages/g/gcc-toolset-13-annobin-docs-12.92-1.el9.noarch.rpm
+        repoid: ubi-9-for-ppc64le-appstream-rpms
+        size: 90409
+        checksum: sha256:c21c4ddf56317514a5f574f19c8267aad0c359b912a9f34585829aa5a417e4fc
+        name: gcc-toolset-13-annobin-docs
+        evr: 12.92-1.el9
+        sourcerpm: gcc-toolset-13-annobin-12.92-1.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/os/Packages/g/gcc-toolset-13-annobin-plugin-gcc-12.92-1.el9.ppc64le.rpm
+        repoid: ubi-9-for-ppc64le-appstream-rpms
+        size: 1005593
+        checksum: sha256:2956467c94b0ef2190089a886a80efe01597542cdf41e7fdd59308a74d67e390
+        name: gcc-toolset-13-annobin-plugin-gcc
+        evr: 12.92-1.el9
+        sourcerpm: gcc-toolset-13-annobin-12.92-1.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/os/Packages/g/gcc-toolset-13-binutils-2.40-21.el9.ppc64le.rpm
+        repoid: ubi-9-for-ppc64le-appstream-rpms
+        size: 6792139
+        checksum: sha256:a213f09be024cceceee3d9b4cc98a750092e0acc1350a8b83d09b0dd231f85c5
+        name: gcc-toolset-13-binutils
+        evr: 2.40-21.el9
+        sourcerpm: gcc-toolset-13-binutils-2.40-21.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/os/Packages/g/gcc-toolset-13-binutils-gold-2.40-21.el9.ppc64le.rpm
+        repoid: ubi-9-for-ppc64le-appstream-rpms
+        size: 1164647
+        checksum: sha256:e72595ba0ba72e61f6e7c5a696043d86ff8b2036e64e25cf6bbb846f7f7b7c10
+        name: gcc-toolset-13-binutils-gold
+        evr: 2.40-21.el9
+        sourcerpm: gcc-toolset-13-binutils-2.40-21.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/os/Packages/g/gcc-toolset-13-dwz-0.14-0.el9.ppc64le.rpm
+        repoid: ubi-9-for-ppc64le-appstream-rpms
+        size: 140248
+        checksum: sha256:8a8924ba0c237da93ef2c39250fa27dd9bd06ddf13337913b7a63a0ec79c1bb9
+        name: gcc-toolset-13-dwz
+        evr: 0.14-0.el9
+        sourcerpm: gcc-toolset-13-dwz-0.14-0.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/os/Packages/g/gcc-toolset-13-gcc-13.3.1-2.3.el9.ppc64le.rpm
+        repoid: ubi-9-for-ppc64le-appstream-rpms
+        size: 39330688
+        checksum: sha256:6f032336bfffe2c24163146f776ed72a067de760b6e7cc3b65397897f7c74518
+        name: gcc-toolset-13-gcc
+        evr: 13.3.1-2.3.el9
+        sourcerpm: gcc-toolset-13-gcc-13.3.1-2.3.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/os/Packages/g/gcc-toolset-13-gcc-c++-13.3.1-2.3.el9.ppc64le.rpm
+        repoid: ubi-9-for-ppc64le-appstream-rpms
+        size: 12637379
+        checksum: sha256:66d6c6dbd1dd74c0a95f4eb37679288ea7415ac0495db70f7b495d1594057980
+        name: gcc-toolset-13-gcc-c++
+        evr: 13.3.1-2.3.el9
+        sourcerpm: gcc-toolset-13-gcc-13.3.1-2.3.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/os/Packages/g/gcc-toolset-13-gcc-gfortran-13.3.1-2.3.el9.ppc64le.rpm
+        repoid: ubi-9-for-ppc64le-appstream-rpms
+        size: 12553419
+        checksum: sha256:59c4acf3a450ccdca82559cacf23493933e8a4b45c757c15763ccd3b5ad80ae0
+        name: gcc-toolset-13-gcc-gfortran
+        evr: 13.3.1-2.3.el9
+        sourcerpm: gcc-toolset-13-gcc-13.3.1-2.3.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/os/Packages/g/gcc-toolset-13-gdb-12.1-5.el9.ppc64le.rpm
+        repoid: ubi-9-for-ppc64le-appstream-rpms
+        size: 4376192
+        checksum: sha256:01b28296a27934ae6f9e2682aec45069eccaf7d6484c0c949376627a552ebaec
+        name: gcc-toolset-13-gdb
+        evr: 12.1-5.el9
+        sourcerpm: gcc-toolset-13-gdb-12.1-5.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/os/Packages/g/gcc-toolset-13-libquadmath-devel-13.3.1-2.3.el9.ppc64le.rpm
+        repoid: ubi-9-for-ppc64le-appstream-rpms
+        size: 193388
+        checksum: sha256:7ad61df2b573edf410b519a4d42857cd8d6b09d5a7f9d1897741bc4cf1930a2b
+        name: gcc-toolset-13-libquadmath-devel
+        evr: 13.3.1-2.3.el9
+        sourcerpm: gcc-toolset-13-gcc-13.3.1-2.3.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/os/Packages/g/gcc-toolset-13-libstdc++-devel-13.3.1-2.3.el9.ppc64le.rpm
+        repoid: ubi-9-for-ppc64le-appstream-rpms
+        size: 3859075
+        checksum: sha256:9b73c1a0cbdaf093c107f9f306ba936d5c8319e2b0007effd9d30ecdc99e51e4
+        name: gcc-toolset-13-libstdc++-devel
+        evr: 13.3.1-2.3.el9
+        sourcerpm: gcc-toolset-13-gcc-13.3.1-2.3.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/os/Packages/g/gcc-toolset-13-runtime-13.0-2.el9.ppc64le.rpm
+        repoid: ubi-9-for-ppc64le-appstream-rpms
+        size: 63627
+        checksum: sha256:888da18beeee2fb9e923949c3757ae8366abe35ee736dc016c2b9d205c4afb39
+        name: gcc-toolset-13-runtime
+        evr: 13.0-2.el9
+        sourcerpm: gcc-toolset-13-13.0-2.el9.src.rpm
       - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/os/Packages/g/gcc-toolset-14-binutils-2.41-4.el9_6.1.ppc64le.rpm
         repoid: ubi-9-for-ppc64le-appstream-rpms
         size: 7078090
@@ -123,6 +214,13 @@ arches:
         name: libomp-devel
         evr: 19.1.7-2.el9
         sourcerpm: llvm-19.1.7-2.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/os/Packages/l/libuuid-devel-2.37.4-21.el9.ppc64le.rpm
+        repoid: ubi-9-for-ppc64le-appstream-rpms
+        size: 28730
+        checksum: sha256:48ba26c56059df9c4dd8903bd30d4b1e03bcc6200967de4a19e083524ab5aede
+        name: libuuid-devel
+        evr: 2.37.4-21.el9
+        sourcerpm: util-linux-2.37.4-21.el9.src.rpm
       - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/os/Packages/l/libuv-1.42.0-2.el9_4.ppc64le.rpm
         repoid: ubi-9-for-ppc64le-appstream-rpms
         size: 163459
@@ -318,6 +416,42 @@ arches:
         checksum: sha256:2f86bb96562eaf679969c2716738fbdfcc8a3966ecc3bb6317596fe2e214ea2b
         name: cmake
         evr: 3.26.5-2.el9
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/source/SRPMS/Packages/g/gcc-toolset-13-13.0-2.el9.src.rpm
+        repoid: ubi-9-for-ppc64le-appstream-source-rpms
+        size: 15279
+        checksum: sha256:3ac57b9dea39963c87f658f978e95df19511767bdcff6517d84403d7ff003412
+        name: gcc-toolset-13
+        evr: 13.0-2.el9
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/source/SRPMS/Packages/g/gcc-toolset-13-annobin-12.92-1.el9.src.rpm
+        repoid: ubi-9-for-ppc64le-appstream-source-rpms
+        size: 1000032
+        checksum: sha256:ddda1a9104286ac58666841dd9749815b84c819459e90261948eaffd90ac59f4
+        name: gcc-toolset-13-annobin
+        evr: 12.92-1.el9
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/source/SRPMS/Packages/g/gcc-toolset-13-binutils-2.40-21.el9.src.rpm
+        repoid: ubi-9-for-ppc64le-appstream-source-rpms
+        size: 25343605
+        checksum: sha256:19745c00cdca6ca3f73858e2479be4261b358109c071972e28ef6301a9e52280
+        name: gcc-toolset-13-binutils
+        evr: 2.40-21.el9
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/source/SRPMS/Packages/g/gcc-toolset-13-dwz-0.14-0.el9.src.rpm
+        repoid: ubi-9-for-ppc64le-appstream-source-rpms
+        size: 157152
+        checksum: sha256:ad35e66a0f631a3fb23bf1bb9f5e05bf5dd975b268b36395bf0feb9f8673f212
+        name: gcc-toolset-13-dwz
+        evr: 0.14-0.el9
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/source/SRPMS/Packages/g/gcc-toolset-13-gcc-13.3.1-2.3.el9.src.rpm
+        repoid: ubi-9-for-ppc64le-appstream-source-rpms
+        size: 89348166
+        checksum: sha256:3cbaaf052ced5fd2c4dea40bb4541cfc0582225627dab8e34478f6f821e88866
+        name: gcc-toolset-13-gcc
+        evr: 13.3.1-2.3.el9
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/source/SRPMS/Packages/g/gcc-toolset-13-gdb-12.1-5.el9.src.rpm
+        repoid: ubi-9-for-ppc64le-appstream-source-rpms
+        size: 23135163
+        checksum: sha256:b442ed3771ea81b93edfda2ad58b56f7b553c9160707d530682ee721f0045841
+        name: gcc-toolset-13-gdb
+        evr: 12.1-5.el9
       - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/appstream/source/SRPMS/Packages/g/gcc-toolset-14-14.0-1.el9.src.rpm
         repoid: ubi-9-for-ppc64le-appstream-source-rpms
         size: 14934
@@ -414,6 +548,12 @@ arches:
         checksum: sha256:6e57d0e6a49d784f9ac26173e7dc42ccdb7cf82f174c5c7b0a04e19551058fc6
         name: setools
         evr: 4.4.4-1.el9
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/baseos/source/SRPMS/Packages/u/util-linux-2.37.4-21.el9.src.rpm
+        repoid: ubi-9-for-ppc64le-baseos-source-rpms
+        size: 6281028
+        checksum: sha256:cde2d6a98345d49de9d225fc3acf7542fb35fde32832f1361415486a7839c222
+        name: util-linux
+        evr: 2.37.4-21.el9
       - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/ppc64le/baseos/source/SRPMS/Packages/z/zstd-1.5.5-1.el9.src.rpm
         repoid: ubi-9-for-ppc64le-baseos-source-rpms
         size: 2378112
@@ -492,6 +632,97 @@ arches:
         name: compiler-rt
         evr: 19.1.7-2.el9
         sourcerpm: llvm-19.1.7-2.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/g/gcc-toolset-13-13.0-2.el9.x86_64.rpm
+        repoid: ubi-9-for-x86_64-appstream-rpms
+        size: 11934
+        checksum: sha256:05e742f3c62c757a88a9dfbd59617b6bf841d36461b1f959a64586cc4bce4337
+        name: gcc-toolset-13
+        evr: 13.0-2.el9
+        sourcerpm: gcc-toolset-13-13.0-2.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/g/gcc-toolset-13-annobin-docs-12.92-1.el9.noarch.rpm
+        repoid: ubi-9-for-x86_64-appstream-rpms
+        size: 90409
+        checksum: sha256:c21c4ddf56317514a5f574f19c8267aad0c359b912a9f34585829aa5a417e4fc
+        name: gcc-toolset-13-annobin-docs
+        evr: 12.92-1.el9
+        sourcerpm: gcc-toolset-13-annobin-12.92-1.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/g/gcc-toolset-13-annobin-plugin-gcc-12.92-1.el9.x86_64.rpm
+        repoid: ubi-9-for-x86_64-appstream-rpms
+        size: 1003491
+        checksum: sha256:0ae9fd1b982e82f208fdd3c3e1841a09fc03e67873ed1a290bbe670b6e2240b7
+        name: gcc-toolset-13-annobin-plugin-gcc
+        evr: 12.92-1.el9
+        sourcerpm: gcc-toolset-13-annobin-12.92-1.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/g/gcc-toolset-13-binutils-2.40-21.el9.x86_64.rpm
+        repoid: ubi-9-for-x86_64-appstream-rpms
+        size: 6035750
+        checksum: sha256:b808432cf1d7c564280fda2e1c8382d5901af838f8d6ab8d91e5d1a37c2f4a9c
+        name: gcc-toolset-13-binutils
+        evr: 2.40-21.el9
+        sourcerpm: gcc-toolset-13-binutils-2.40-21.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/g/gcc-toolset-13-binutils-gold-2.40-21.el9.x86_64.rpm
+        repoid: ubi-9-for-x86_64-appstream-rpms
+        size: 850981
+        checksum: sha256:c5fe9671a394bd445be2ae42837e228eedb1ee327365bf04a4d94404b24b7801
+        name: gcc-toolset-13-binutils-gold
+        evr: 2.40-21.el9
+        sourcerpm: gcc-toolset-13-binutils-2.40-21.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/g/gcc-toolset-13-dwz-0.14-0.el9.x86_64.rpm
+        repoid: ubi-9-for-x86_64-appstream-rpms
+        size: 132337
+        checksum: sha256:788ea684df454beb2f26f8f1102a1be66ffa0859aec5f71bd8cd0265a30cc9fa
+        name: gcc-toolset-13-dwz
+        evr: 0.14-0.el9
+        sourcerpm: gcc-toolset-13-dwz-0.14-0.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/g/gcc-toolset-13-gcc-13.3.1-2.3.el9.x86_64.rpm
+        repoid: ubi-9-for-x86_64-appstream-rpms
+        size: 45335493
+        checksum: sha256:ca3f1f13c899db2381b21aa48336816c14942a29bfd22542bc2d27711ccb3ed0
+        name: gcc-toolset-13-gcc
+        evr: 13.3.1-2.3.el9
+        sourcerpm: gcc-toolset-13-gcc-13.3.1-2.3.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/g/gcc-toolset-13-gcc-c++-13.3.1-2.3.el9.x86_64.rpm
+        repoid: ubi-9-for-x86_64-appstream-rpms
+        size: 14205471
+        checksum: sha256:dc86125c5cc507be4cb4aa2897d1d269ac25803075a3c9e103f791c46243d033
+        name: gcc-toolset-13-gcc-c++
+        evr: 13.3.1-2.3.el9
+        sourcerpm: gcc-toolset-13-gcc-13.3.1-2.3.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/g/gcc-toolset-13-gcc-gfortran-13.3.1-2.3.el9.x86_64.rpm
+        repoid: ubi-9-for-x86_64-appstream-rpms
+        size: 15076149
+        checksum: sha256:350a489f4ee3d46fb003e0f87307cb0010414b4a7c80d7b12faa676099f0a620
+        name: gcc-toolset-13-gcc-gfortran
+        evr: 13.3.1-2.3.el9
+        sourcerpm: gcc-toolset-13-gcc-13.3.1-2.3.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/g/gcc-toolset-13-gdb-12.1-5.el9.x86_64.rpm
+        repoid: ubi-9-for-x86_64-appstream-rpms
+        size: 4490029
+        checksum: sha256:185c908a4a8d018df23ee0fc6a5c91b788285d1a3510494ef635e742be69f1d3
+        name: gcc-toolset-13-gdb
+        evr: 12.1-5.el9
+        sourcerpm: gcc-toolset-13-gdb-12.1-5.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/g/gcc-toolset-13-libquadmath-devel-13.3.1-2.3.el9.x86_64.rpm
+        repoid: ubi-9-for-x86_64-appstream-rpms
+        size: 192084
+        checksum: sha256:86283aaed08cac1a2fb214618f42a0f208bd06a4f40b02ce604bb16e26fb40c8
+        name: gcc-toolset-13-libquadmath-devel
+        evr: 13.3.1-2.3.el9
+        sourcerpm: gcc-toolset-13-gcc-13.3.1-2.3.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/g/gcc-toolset-13-libstdc++-devel-13.3.1-2.3.el9.x86_64.rpm
+        repoid: ubi-9-for-x86_64-appstream-rpms
+        size: 3688084
+        checksum: sha256:799344d751ac65571262ec8438a5241d51a70f6702e82162775520eb0002bfac
+        name: gcc-toolset-13-libstdc++-devel
+        evr: 13.3.1-2.3.el9
+        sourcerpm: gcc-toolset-13-gcc-13.3.1-2.3.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/g/gcc-toolset-13-runtime-13.0-2.el9.x86_64.rpm
+        repoid: ubi-9-for-x86_64-appstream-rpms
+        size: 63636
+        checksum: sha256:0061a02187dbbdfd6da659c98749693bce4da02be8d4d9827a8d1fa867610e9d
+        name: gcc-toolset-13-runtime
+        evr: 13.0-2.el9
+        sourcerpm: gcc-toolset-13-13.0-2.el9.src.rpm
       - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/g/gcc-toolset-14-binutils-2.41-4.el9_6.1.x86_64.rpm
         repoid: ubi-9-for-x86_64-appstream-rpms
         size: 6902627
@@ -548,6 +779,13 @@ arches:
         name: libomp-devel
         evr: 19.1.7-2.el9
         sourcerpm: llvm-19.1.7-2.el9.src.rpm
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/l/libuuid-devel-2.37.4-21.el9.x86_64.rpm
+        repoid: ubi-9-for-x86_64-appstream-rpms
+        size: 28745
+        checksum: sha256:afffdf49ac55e5e09a8078c14b6f2f0205b07c1371cb9004b7356325c99de946
+        name: libuuid-devel
+        evr: 2.37.4-21.el9
+        sourcerpm: util-linux-2.37.4-21.el9.src.rpm
       - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/l/libuv-1.42.0-2.el9_4.x86_64.rpm
         repoid: ubi-9-for-x86_64-appstream-rpms
         size: 154427
@@ -750,6 +988,42 @@ arches:
         checksum: sha256:2f86bb96562eaf679969c2716738fbdfcc8a3966ecc3bb6317596fe2e214ea2b
         name: cmake
         evr: 3.26.5-2.el9
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/source/SRPMS/Packages/g/gcc-toolset-13-13.0-2.el9.src.rpm
+        repoid: ubi-9-for-x86_64-appstream-source-rpms
+        size: 15279
+        checksum: sha256:3ac57b9dea39963c87f658f978e95df19511767bdcff6517d84403d7ff003412
+        name: gcc-toolset-13
+        evr: 13.0-2.el9
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/source/SRPMS/Packages/g/gcc-toolset-13-annobin-12.92-1.el9.src.rpm
+        repoid: ubi-9-for-x86_64-appstream-source-rpms
+        size: 1000032
+        checksum: sha256:ddda1a9104286ac58666841dd9749815b84c819459e90261948eaffd90ac59f4
+        name: gcc-toolset-13-annobin
+        evr: 12.92-1.el9
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/source/SRPMS/Packages/g/gcc-toolset-13-binutils-2.40-21.el9.src.rpm
+        repoid: ubi-9-for-x86_64-appstream-source-rpms
+        size: 25343605
+        checksum: sha256:19745c00cdca6ca3f73858e2479be4261b358109c071972e28ef6301a9e52280
+        name: gcc-toolset-13-binutils
+        evr: 2.40-21.el9
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/source/SRPMS/Packages/g/gcc-toolset-13-dwz-0.14-0.el9.src.rpm
+        repoid: ubi-9-for-x86_64-appstream-source-rpms
+        size: 157152
+        checksum: sha256:ad35e66a0f631a3fb23bf1bb9f5e05bf5dd975b268b36395bf0feb9f8673f212
+        name: gcc-toolset-13-dwz
+        evr: 0.14-0.el9
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/source/SRPMS/Packages/g/gcc-toolset-13-gcc-13.3.1-2.3.el9.src.rpm
+        repoid: ubi-9-for-x86_64-appstream-source-rpms
+        size: 89348166
+        checksum: sha256:3cbaaf052ced5fd2c4dea40bb4541cfc0582225627dab8e34478f6f821e88866
+        name: gcc-toolset-13-gcc
+        evr: 13.3.1-2.3.el9
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/source/SRPMS/Packages/g/gcc-toolset-13-gdb-12.1-5.el9.src.rpm
+        repoid: ubi-9-for-x86_64-appstream-source-rpms
+        size: 23135163
+        checksum: sha256:b442ed3771ea81b93edfda2ad58b56f7b553c9160707d530682ee721f0045841
+        name: gcc-toolset-13-gdb
+        evr: 12.1-5.el9
       - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/source/SRPMS/Packages/g/gcc-toolset-14-14.0-1.el9.src.rpm
         repoid: ubi-9-for-x86_64-appstream-source-rpms
         size: 14934
@@ -852,6 +1126,12 @@ arches:
         checksum: sha256:6e57d0e6a49d784f9ac26173e7dc42ccdb7cf82f174c5c7b0a04e19551058fc6
         name: setools
         evr: 4.4.4-1.el9
+      - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/baseos/source/SRPMS/Packages/u/util-linux-2.37.4-21.el9.src.rpm
+        repoid: ubi-9-for-x86_64-baseos-source-rpms
+        size: 6281028
+        checksum: sha256:cde2d6a98345d49de9d225fc3acf7542fb35fde32832f1361415486a7839c222
+        name: util-linux
+        evr: 2.37.4-21.el9
       - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/baseos/source/SRPMS/Packages/z/zstd-1.5.5-1.el9.src.rpm
         repoid: ubi-9-for-x86_64-baseos-source-rpms
         size: 2378112
