@@ -18,6 +18,12 @@ dnf install -y gcc-toolset-13 make cmake ninja-build libomp-devel \
 source /opt/rh/gcc-toolset-13/enable
 export CXX=/opt/rh/gcc-toolset-13/root/usr/bin/g++
 
+# Ensure CXXFLAGS and LINKFLAGS are initialized
+: "${CMAKE_ARGS:=""}"
+: "${CXXFLAGS:=""}"
+: "${CFLAGS:=""}"
+: "${LINKFLAGS:=""}"
+
 # Installing Python build dependencies
 python${PYTHON_VERSION} -m pip install build wheel setuptools ninja pybind11 numpy setuptools_scm Cython==3.0.8
 
