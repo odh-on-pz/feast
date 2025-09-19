@@ -43,16 +43,17 @@ cd ../../..
 # Build gRPC  (Python package)
 #######################################################
 echo "Building grpcio..."
-git clone https://github.com/grpc/grpc.git -b v1.62.3
-cd grpc
-git checkout v1.62.3
-git submodule update --init --recursive
-python${PYTHON_VERSION} -m pip install -r requirements.txt
+# git clone https://github.com/grpc/grpc.git -b v1.62.3
+# cd grpc
+# git checkout v1.62.3
+# git submodule update --init --recursive
+# python${PYTHON_VERSION} -m pip install -r requirements.txt
 export GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1
-python${PYTHON_VERSION} -m build --wheel --no-isolation
-ls dist/*.whl >/dev/null
-cp -v dist/*.whl /wheelhouse/
-cd ..
+# python${PYTHON_VERSION} -m build --wheel --no-isolation
+# ls dist/*.whl >/dev/null
+# cp -v dist/*.whl /wheelhouse/
+# cd ..
+pip install grpcio==1.62.3
 
 #######################################################
 # Build Pyarrow  (Python package)
