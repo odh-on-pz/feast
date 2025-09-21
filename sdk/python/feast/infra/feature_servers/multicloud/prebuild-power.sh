@@ -259,8 +259,16 @@ cd ../../..
 #######################################################
 echo "Building milvus-lite..."
 dnf remove -y gcc-toolset-13
-dnf install -y wget perl openblas-devel cargo gcc gcc-c++ libstdc++-static which libaio \
-               ncurses-devel libtool m4 autoconf automake zlib-devel libffi-devel scl-utils xz
+
+# Refresh repos
+dnf clean all
+rm -rf /var/cache/dnf
+dnf makecache
+
+# Install perl and ncurses first with --nobest
+dnf install -y perl ncurses-devel --nobest
+dnf install -y wget openblas-devel cargo gcc gcc-c++ libstdc++-static which libaio \
+               libtool m4 autoconf automake zlib-devel libffi-devel scl-utils xz
 
 export CC=gcc
 export CXX=g++
