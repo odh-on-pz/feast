@@ -9,8 +9,9 @@ CMAKE_VERSION=3.30.5
 CMAKE_REQUIRED_VERSION=3.30.5
 
 dnf repolist enabled
-dnf --showduplicates list perl ncurses-devel
-dnf install -y perl ncurses-devel
+# dnf --showduplicates list perl ncurses-devel
+dnf --showduplicates list perl ncurses-devel perl-libs perl-interpreter ncurses-libs
+dnf install -y perl ncurses-devel perl-libs perl-interpreter ncurses-libs
 dnf install -y gcc-toolset-13 make cmake ninja-build libomp-devel \
                git python${PYTHON_VERSION} python${PYTHON_VERSION}-devel python${PYTHON_VERSION}-pip \
                openssl openssl-devel zlib-devel libuuid-devel 
