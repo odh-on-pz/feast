@@ -59,7 +59,7 @@ spec:
         },
         {
           "type": "generic",
-          "path": "sdk/python/feast/infra/feature_servers/multicloud",
+          "path": "sdk/python/feast/infra/feature_servers/multicloud"
         }
       ]
   - name: build-source-image
