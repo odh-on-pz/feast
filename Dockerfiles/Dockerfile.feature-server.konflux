@@ -7,8 +7,8 @@ USER 0
 COPY prebuild-power.sh /prebuild-power.sh
 RUN chmod +x /prebuild-power.sh
 
-# Copy prefetched duckdb tarball
-COPY /cachi2/output/deps/generic/duckdb-v1.1.3.tar.gz /tmp/
+# Prefetched artifacts
+RUN cp /cachi2/output/deps/generic/duckdb-v1.1.3.tar.gz /tmp/
 
 # Extract
 RUN if [ "$(uname -m)" = "ppc64le" ]; then \
