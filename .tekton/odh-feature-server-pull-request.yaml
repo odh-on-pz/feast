@@ -56,6 +56,10 @@ spec:
         {
           "type": "rpm",
           "path": "sdk/python/feast/infra/feature_servers/multicloud/offline"
+        },
+        {
+          "type": "generic",
+          "path": "sdk/python/feast/infra/feature_servers/multicloud",
         }
       ]
   - name: build-source-image
