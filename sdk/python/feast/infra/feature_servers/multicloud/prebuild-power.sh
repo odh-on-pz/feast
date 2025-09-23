@@ -47,6 +47,8 @@ cd /tmp/duckdb-1.1.3/tools/pythonpkg
 
 #cd tools/pythonpkg
 #cd /cachi2/output/src/duckdb/tools/pythonpkg
+pwd
+export SETUPTOOLS_SCM_PRETEND_VERSION=1.1.3
 python${PYTHON_VERSION} -m build --wheel --no-isolation
 ls dist/*.whl >/dev/null
 cp -v dist/*.whl /wheelhouse/
