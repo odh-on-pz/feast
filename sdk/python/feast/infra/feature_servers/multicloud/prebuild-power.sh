@@ -4,15 +4,9 @@ trap 'echo "[prebuild-power] failed at line $LINENO"; exit 1' ERR
 shopt -s dotglob nullglob
 
 PYTHON_VERSION=3.11
-WORKDIR=$(pwd)
+WORKDIR="/tmp"
 CMAKE_VERSION=3.30.5
 CMAKE_REQUIRED_VERSION=3.30.5
-
-dnf repolist enabled
-# dnf --showduplicates list perl ncurses-devel
-# dnf --showduplicates list perl ncurses-devel perl-libs perl-interpreter ncurses-libs
-# dnf install -y ncurses-devel --nobest
-# dnf update -y perl --nobest
 
 dnf install -y gcc-toolset-13 make cmake ninja-build libomp-devel \
                git python${PYTHON_VERSION} python${PYTHON_VERSION}-devel python${PYTHON_VERSION}-pip \
@@ -37,37 +31,19 @@ mkdir -p /wheelhouse
 #######################################################
 # Build DuckDB (Python package)
 #######################################################
-echo "Building duckdb..."
-# git clone https://github.com/duckdb/duckdb.git
-# cd duckdb
-# git checkout v1.1.3
-
 echo "Entering DuckDB source directory..."
 cd /tmp/duckdb-1.1.3/tools/pythonpkg
-
-#cd tools/pythonpkg
-#cd /cachi2/output/src/duckdb/tools/pythonpkg
-pwd
 export SETUPTOOLS_SCM_PRETEND_VERSION=1.1.3
 python${PYTHON_VERSION} -m build --wheel --no-isolation
 ls dist/*.whl >/dev/null
 cp -v dist/*.whl /wheelhouse/
-cd ../../..
+cd $WORKDIR
 
 #######################################################
 # Build gRPC  (Python package)
 #######################################################
 echo "Building grpcio..."
-# git clone https://github.com/grpc/grpc.git -b v1.62.3
-# cd grpc
-# git checkout v1.62.3
-# git submodule update --init --recursive
-# python${PYTHON_VERSION} -m pip install -r requirements.txt
 export GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1
-# python${PYTHON_VERSION} -m build --wheel --no-isolation
-# ls dist/*.whl >/dev/null
-# cp -v dist/*.whl /wheelhouse/
-# cd ..
 pip install grpcio==1.62.3
 
 #######################################################
@@ -76,8 +52,8 @@ pip install grpcio==1.62.3
 echo "Building pyarrow..."
 
 # rapidjson installing
-git clone https://github.com/Tencent/rapidjson.git
-cd rapidjson
+echo "Entering RapidJSON source directory..."
+cd /tmp/rapidjson-1.1.0
 mkdir build && cd build
 cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local
 make -j$(nproc)
@@ -85,8 +61,8 @@ make install
 cd $WORKDIR
 
 # gflags installing
-git clone https://github.com/gflags/gflags.git
-cd gflags
+echo "Entering gflags source directory..."
+cd /tmp/gflags-2.2.2
 mkdir build && cd build
 cmake ..
 make -j$(nproc)
@@ -94,10 +70,8 @@ make install
 cd $WORKDIR
 
 # boost_cpp installing
-git clone https://github.com/boostorg/boost
-cd boost
-git checkout boost-1.81.0
-git submodule update --init
+echo "Entering Boost source directory..."
+cd /tmp/boost-boost-1.81.0
 
 mkdir Boost_prefix
 export BOOST_PREFIX=$(pwd)/Boost_prefix
