@@ -8,7 +8,6 @@ WORKDIR="/tmp"
 CMAKE_VERSION=3.30.5
 CMAKE_REQUIRED_VERSION=3.30.5
 
-dnf install -y perl ncurses-devel
 dnf install -y gcc-toolset-13 make cmake ninja-build libomp-devel \
                git python${PYTHON_VERSION} python${PYTHON_VERSION}-devel python${PYTHON_VERSION}-pip \
                openssl openssl-devel zlib-devel libuuid-devel 
@@ -32,53 +31,53 @@ mkdir -p /wheelhouse
 #######################################################
 # Build DuckDB (Python package)
 #######################################################
-echo "Entering DuckDB source directory..."
-cd /tmp/duckdb-1.1.3/tools/pythonpkg
-export SETUPTOOLS_SCM_PRETEND_VERSION=1.1.3
-python${PYTHON_VERSION} -m build --wheel --no-isolation
-ls dist/*.whl >/dev/null
-cp -v dist/*.whl /wheelhouse/
-cd $WORKDIR
+# echo "Entering DuckDB source directory..."
+# cd /tmp/duckdb-1.1.3/tools/pythonpkg
+# export SETUPTOOLS_SCM_PRETEND_VERSION=1.1.3
+# python${PYTHON_VERSION} -m build --wheel --no-isolation
+# ls dist/*.whl >/dev/null
+# cp -v dist/*.whl /wheelhouse/
+# cd $WORKDIR
 
 #######################################################
 # Build gRPC  (Python package)
 #######################################################
-echo "Building grpcio..."
-export GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1
-pip install grpcio==1.62.3
+# echo "Building grpcio..."
+# export GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1
+# pip install grpcio==1.62.3
 
 #######################################################
 # Build Pyarrow  (Python package)
 #######################################################
-echo "Entering Pyarrow source directory..."
-cd /tmp/arrow-apache-arrow-17.0.0
-cd cpp
-mkdir -p release && cd release
-cmake -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_INSTALL_PREFIX=/usr/local \
-      -DARROW_PYTHON=ON \
-      -DARROW_PARQUET=ON \
-      -DARROW_ORC=ON \
-      -DARROW_FILESYSTEM=ON \
-      -DARROW_WITH_LZ4=ON \
-      -DARROW_WITH_ZSTD=ON \
-      -DARROW_WITH_SNAPPY=ON \
-      -DARROW_JSON=ON \
-      -DARROW_CSV=ON \
-      -DARROW_DATASET=ON \
-      -DARROW_S3=ON \
-      -DARROW_SUBSTRAIT=ON \
-      -DProtobuf_SOURCE=BUNDLED \
-      -DARROW_DEPENDENCY_SOURCE=BUNDLED \
-    ..
-make -j$(nproc)
-make install
-cd ../../python
-export BUILD_TYPE=release
-python${PYTHON_VERSION} setup.py build_ext --build-type=$BUILD_TYPE --bundle-arrow-cpp bdist_wheel
-ls dist/*.whl >/dev/null
-cp -v dist/*.whl /wheelhouse/
-cd ../../..
+# echo "Entering Pyarrow source directory..."
+# cd /tmp/arrow-apache-arrow-17.0.0
+# cd cpp
+# mkdir -p release && cd release
+# cmake -DCMAKE_BUILD_TYPE=Release \
+#       -DCMAKE_INSTALL_PREFIX=/usr/local \
+#       -DARROW_PYTHON=ON \
+#       -DARROW_PARQUET=ON \
+#       -DARROW_ORC=ON \
+#       -DARROW_FILESYSTEM=ON \
+#       -DARROW_WITH_LZ4=ON \
+#       -DARROW_WITH_ZSTD=ON \
+#       -DARROW_WITH_SNAPPY=ON \
+#       -DARROW_JSON=ON \
+#       -DARROW_CSV=ON \
+#       -DARROW_DATASET=ON \
+#       -DARROW_S3=ON \
+#       -DARROW_SUBSTRAIT=ON \
+#       -DProtobuf_SOURCE=BUNDLED \
+#       -DARROW_DEPENDENCY_SOURCE=BUNDLED \
+#     ..
+# make -j$(nproc)
+# make install
+# cd ../../python
+# export BUILD_TYPE=release
+# python${PYTHON_VERSION} setup.py build_ext --build-type=$BUILD_TYPE --bundle-arrow-cpp bdist_wheel
+# ls dist/*.whl >/dev/null
+# cp -v dist/*.whl /wheelhouse/
+# cd ../../..
 
 #######################################################
 # Build Milvus-Lite  (Python package)
@@ -86,14 +85,7 @@ cd ../../..
 echo "Building milvus-lite..."
 dnf remove -y gcc-toolset-13
 
-# Refresh repos
-dnf clean all
-rm -rf /var/cache/dnf
-dnf makecache
-
-# Install perl and ncurses first with --nobest
-# dnf install -y perl ncurses-devel --nobest
-dnf install -y wget openblas-devel cargo gcc gcc-c++ libstdc++-static which libaio \
+dnf install -y perl ncurses-devel wget openblas-devel cargo gcc gcc-c++ libstdc++-static which libaio \
                libtool m4 autoconf automake zlib-devel libffi-devel scl-utils xz
 
 export CC=gcc
