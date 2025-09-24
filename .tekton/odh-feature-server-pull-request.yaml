@@ -36,7 +36,7 @@ spec:
   - name: path-context
     value: "sdk/python/feast/infra/feature_servers/multicloud"
   - name: hermetic
-    value: true
+    value: false
   - name: prefetch-input
     value: |
       [
