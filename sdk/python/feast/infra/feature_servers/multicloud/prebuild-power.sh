@@ -4,7 +4,7 @@ trap 'echo "[prebuild-power] failed at line $LINENO"; exit 1' ERR
 shopt -s dotglob nullglob
 
 PYTHON_VERSION=3.11
-WORKDIR="/tmp"
+WORKDIR=$(pwd)
 CMAKE_VERSION=3.30.5
 CMAKE_REQUIRED_VERSION=3.30.5
 
