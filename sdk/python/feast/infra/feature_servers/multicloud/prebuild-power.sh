@@ -35,6 +35,8 @@ echo "Entering DuckDB source directory..."
 cd /tmp/duckdb-1.1.3/tools/pythonpkg
 export SETUPTOOLS_SCM_PRETEND_VERSION=1.1.3
 python${PYTHON_VERSION} -m build --wheel --no-isolation
+# Cleanup
+unset SETUPTOOLS_SCM_PRETEND_VERSION
 ls dist/*.whl >/dev/null
 cp -v dist/*.whl /wheelhouse/
 cd $WORKDIR
@@ -66,6 +68,7 @@ cmake -DCMAKE_BUILD_TYPE=Release \
       -DARROW_CSV=ON \
       -DARROW_DATASET=ON \
       -DARROW_S3=ON \
+      -DARROW_BUILD_TESTS=OFF \
       -DARROW_SUBSTRAIT=ON \
       -DProtobuf_SOURCE=BUNDLED \
       -DARROW_DEPENDENCY_SOURCE=BUNDLED \
@@ -92,7 +95,7 @@ export CC=gcc
 export CXX=g++
 export CXXFLAGS="-std=c++17"
 
-python${PYTHON_VERSION} -m pip install wheel conan==1.64.1 setuptools==70.0.0
+python${PYTHON_VERSION} -m pip install conan==1.64.1 setuptools==70.0.0
 
 # echo "installing texinfo"
 # wget https://ftp.gnu.org/gnu/texinfo/texinfo-7.1.tar.xz
