@@ -31,53 +31,53 @@ mkdir -p /wheelhouse
 #######################################################
 # Build DuckDB (Python package)
 #######################################################
-# echo "Entering DuckDB source directory..."
-# cd /tmp/duckdb-1.1.3/tools/pythonpkg
-# export SETUPTOOLS_SCM_PRETEND_VERSION=1.1.3
-# python${PYTHON_VERSION} -m build --wheel --no-isolation
-# ls dist/*.whl >/dev/null
-# cp -v dist/*.whl /wheelhouse/
-# cd $WORKDIR
+echo "Entering DuckDB source directory..."
+cd /tmp/duckdb-1.1.3/tools/pythonpkg
+export SETUPTOOLS_SCM_PRETEND_VERSION=1.1.3
+python${PYTHON_VERSION} -m build --wheel --no-isolation
+ls dist/*.whl >/dev/null
+cp -v dist/*.whl /wheelhouse/
+cd $WORKDIR
 
 #######################################################
 # Build gRPC  (Python package)
 #######################################################
-# echo "Building grpcio..."
-# export GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1
-# pip install grpcio==1.62.3
+echo "Building grpcio..."
+export GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1
+pip install grpcio==1.62.3
 
 #######################################################
 # Build Pyarrow  (Python package)
 #######################################################
-# echo "Entering Pyarrow source directory..."
-# cd /tmp/arrow-apache-arrow-17.0.0
-# cd cpp
-# mkdir -p release && cd release
-# cmake -DCMAKE_BUILD_TYPE=Release \
-#       -DCMAKE_INSTALL_PREFIX=/usr/local \
-#       -DARROW_PYTHON=ON \
-#       -DARROW_PARQUET=ON \
-#       -DARROW_ORC=ON \
-#       -DARROW_FILESYSTEM=ON \
-#       -DARROW_WITH_LZ4=ON \
-#       -DARROW_WITH_ZSTD=ON \
-#       -DARROW_WITH_SNAPPY=ON \
-#       -DARROW_JSON=ON \
-#       -DARROW_CSV=ON \
-#       -DARROW_DATASET=ON \
-#       -DARROW_S3=ON \
-#       -DARROW_SUBSTRAIT=ON \
-#       -DProtobuf_SOURCE=BUNDLED \
-#       -DARROW_DEPENDENCY_SOURCE=BUNDLED \
-#     ..
-# make -j$(nproc)
-# make install
-# cd ../../python
-# export BUILD_TYPE=release
-# python${PYTHON_VERSION} setup.py build_ext --build-type=$BUILD_TYPE --bundle-arrow-cpp bdist_wheel
-# ls dist/*.whl >/dev/null
-# cp -v dist/*.whl /wheelhouse/
-# cd ../../..
+echo "Entering Pyarrow source directory..."
+cd /tmp/arrow-apache-arrow-17.0.0
+cd cpp
+mkdir -p release && cd release
+cmake -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=/usr/local \
+      -DARROW_PYTHON=ON \
+      -DARROW_PARQUET=ON \
+      -DARROW_ORC=ON \
+      -DARROW_FILESYSTEM=ON \
+      -DARROW_WITH_LZ4=ON \
+      -DARROW_WITH_ZSTD=ON \
+      -DARROW_WITH_SNAPPY=ON \
+      -DARROW_JSON=ON \
+      -DARROW_CSV=ON \
+      -DARROW_DATASET=ON \
+      -DARROW_S3=ON \
+      -DARROW_SUBSTRAIT=ON \
+      -DProtobuf_SOURCE=BUNDLED \
+      -DARROW_DEPENDENCY_SOURCE=BUNDLED \
+    ..
+make -j$(nproc)
+make install
+cd ../../python
+export BUILD_TYPE=release
+python${PYTHON_VERSION} setup.py build_ext --build-type=$BUILD_TYPE --bundle-arrow-cpp bdist_wheel
+ls dist/*.whl >/dev/null
+cp -v dist/*.whl /wheelhouse/
+cd ../../..
 
 #######################################################
 # Build Milvus-Lite  (Python package)
