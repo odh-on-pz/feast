@@ -23,7 +23,7 @@ export CXX=/opt/rh/gcc-toolset-13/root/usr/bin/g++
 : "${LINKFLAGS:=""}"
 
 # Installing Python build dependencies
-python${PYTHON_VERSION} -m pip install build wheel setuptools ninja pybind11 numpy setuptools_scm Cython==3.0.8
+python${PYTHON_VERSION} -m pip install build wheel setuptools ninja pybind11 numpy==2.3.3 setuptools_scm Cython==3.0.8
 
 # Directory to collect built wheels
 mkdir -p /wheelhouse
