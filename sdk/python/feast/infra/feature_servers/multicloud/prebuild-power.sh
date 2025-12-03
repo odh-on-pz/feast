@@ -23,7 +23,7 @@ export CXX=/opt/rh/gcc-toolset-13/root/usr/bin/g++
 : "${LINKFLAGS:=""}"
 
 # Installing Python build dependencies
-python${PYTHON_VERSION} -m pip install build wheel setuptools ninja pybind11 numpy==2.3.3 setuptools_scm Cython==3.0.8
+python${PYTHON_VERSION} -m pip install build wheel setuptools ninja pybind11 numpy setuptools_scm Cython==3.0.8
 
 # Directory to collect built wheels
 mkdir -p /wheelhouse
@@ -32,10 +32,7 @@ mkdir -p /wheelhouse
 # Build DuckDB (Python package)
 #######################################################
 echo "Entering DuckDB source directory..."
-git clone https://github.com/duckdb/duckdb.git
-cd duckdb
-git checkout v1.1.3
-cd tools/pythonpkg
+cd /tmp/duckdb-1.1.3/tools/pythonpkg
 export SETUPTOOLS_SCM_PRETEND_VERSION=1.1.3
 python${PYTHON_VERSION} -m build --wheel --no-isolation
 # Cleanup
@@ -55,10 +52,7 @@ pip install grpcio==1.62.3
 # Build Pyarrow  (Python package)
 #######################################################
 echo "Entering Pyarrow source directory..."
-git clone https://github.com/apache/arrow.git
-cd arrow
-git checkout apache-arrow-17.0.0
-git submodule update --init --recursive
+cd /tmp/arrow-apache-arrow-17.0.0
 cd cpp
 mkdir -p release && cd release
 cmake -DCMAKE_BUILD_TYPE=Release \
