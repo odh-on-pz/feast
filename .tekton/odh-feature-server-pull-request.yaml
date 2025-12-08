@@ -56,7 +56,7 @@ spec:
             "sdk/python/requirements/py3.11-minimal-sdist-requirements-build.txt"
           ],
           "allow_binary": "true",
-	  "pip-args": "--no-binary=:all:"
+          "pip_args": "--no-binary=:all:"
         },
         {
           "type": "rpm",
