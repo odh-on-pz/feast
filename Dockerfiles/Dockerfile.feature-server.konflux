@@ -11,18 +11,12 @@ RUN dnf upgrade -y ncurses ncurses-base ncurses-libs perl-Errno perl-interpreter
 COPY prebuild-power.sh /prebuild-power.sh
 RUN chmod +x /prebuild-power.sh
 
-# Prefetched artifacts
-RUN cp /cachi2/output/deps/generic/duckdb-v1.1.3.tar.gz /tmp/ && \
-    cp /cachi2/output/deps/generic/apache-arrow-17.0.0.tar.gz /tmp/
-
-# Extract (Power only)
-RUN if [ "$(uname -m)" = "ppc64le" ]; then \
-        tar -xzf /tmp/duckdb-v1.1.3.tar.gz -C /tmp && \
-        tar -xzf /tmp/apache-arrow-17.0.0.tar.gz -C /tmp; \
-    fi
+WORKDIR /opt/app-root/src/sdk/python/feast/infra/feature_servers/multicloud/offline
 
 # Run prebuild script conditionally (Power only)
 RUN if [ "$(uname -m)" = "ppc64le" ]; then \
+        echo "Building PyYAML"; \
+        (cd pyyaml && python setup.py install); \
         echo "Power architecture detected. Running prebuild script..."; \
         /prebuild-power.sh && pip install /wheelhouse/*.whl; \
         echo "Listing built wheels:" && ls -lh /wheelhouse; \
