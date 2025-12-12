@@ -32,9 +32,7 @@ mkdir -p /wheelhouse
 # Build DuckDB (Python package)
 #######################################################
 echo "Entering DuckDB source directory..."
-git clone https://github.com/duckdb/duckdb.git
 cd duckdb
-git checkout v1.1.3
 cd tools/pythonpkg
 export SETUPTOOLS_SCM_PRETEND_VERSION=1.1.3
 python${PYTHON_VERSION} -m build --wheel --no-isolation
