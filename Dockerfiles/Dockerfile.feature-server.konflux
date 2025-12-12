@@ -11,12 +11,10 @@ RUN dnf upgrade -y ncurses ncurses-base ncurses-libs perl-Errno perl-interpreter
 COPY prebuild-power.sh /prebuild-power.sh
 RUN chmod +x /prebuild-power.sh
 
-WORKDIR /opt/app-root/src/sdk/python/feast/infra/feature_servers/multicloud/offline
-
 # Run prebuild script conditionally (Power only)
 RUN if [ "$(uname -m)" = "ppc64le" ]; then \
-        echo "Building PyYAML"; \
-        (cd /opt/app-root/src/sdk/python/feast/infra/feature_servers/multicloud/offline && cd duckdb && python setup.py install); \
+        echo "Building DuckDB"; \
+        (cd duckdb && python setup.py install); \
         echo "Power architecture detected. Running prebuild script..."; \
         /prebuild-power.sh && pip install /wheelhouse/*.whl; \
         echo "Listing built wheels:" && ls -lh /wheelhouse; \

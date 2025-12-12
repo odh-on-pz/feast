@@ -1,3 +1,5 @@
-[submodule "sdk/python/feast/infra/feature_servers/multicloud/offline/duckdb"]
-	path = sdk/python/feast/infra/feature_servers/multicloud/offline/duckdb
-	url = https://github.com/duckdb/duckdb.git
+[submodule "duckdb"]
+    path = sdk/python/feast/infra/feature_servers/multicloud
+    url = https://github.com/duckdb/duckdb.git
+    branch = v1.1.3
+
