@@ -16,7 +16,7 @@ WORKDIR /opt/app-root/src/sdk/python/feast/infra/feature_servers/multicloud/offl
 # Run prebuild script conditionally (Power only)
 RUN if [ "$(uname -m)" = "ppc64le" ]; then \
         echo "Building PyYAML"; \
-        (cd /opt/app-root/src/sdk/python/feast/infra/feature_servers/multicloud/offline && cd pyyaml && python setup.py install); \
+        (cd /opt/app-root/src/sdk/python/feast/infra/feature_servers/multicloud/offline && cd duckdb && python setup.py install); \
         echo "Power architecture detected. Running prebuild script..."; \
         /prebuild-power.sh && pip install /wheelhouse/*.whl; \
         echo "Listing built wheels:" && ls -lh /wheelhouse; \
