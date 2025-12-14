@@ -13,6 +13,8 @@ RUN chmod +x /prebuild-power.sh
 
 COPY duckdb ./duckdb
 
+COPY pyarrow ./pyarrow
+
 # Run prebuild script conditionally (Power only)
 RUN if [ "$(uname -m)" = "ppc64le" ]; then \
         echo "Power architecture detected. Running prebuild script..."; \

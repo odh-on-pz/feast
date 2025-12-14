@@ -1,3 +1,6 @@
 [submodule "sdk/python/feast/infra/feature_servers/multicloud/duckdb"]
 	path = sdk/python/feast/infra/feature_servers/multicloud/duckdb
 	url = https://github.com/duckdb/duckdb.git
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/pyarrow"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/pyarrow
+	url = https://github.com/apache/arrow.git
