@@ -27,7 +27,7 @@ ln -s /usr/lib64/libatomic.so.1   /opt/rh/gcc-toolset-13/root/usr/lib/gcc/ppc64l
 : "${LINKFLAGS:=""}"
 
 # Installing Python build dependencies
-python${PYTHON_VERSION} -m pip install build wheel setuptools ninja pybind11 numpy==2.3.3 setuptools_scm Cython==3.0.8
+python${PYTHON_VERSION} -m pip install build wheel setuptools ninja pybind11 numpy==2.3.3 setuptools_scm Cython
 
 # Directory to collect built wheels
 mkdir -p /wheelhouse
@@ -57,7 +57,7 @@ pip install grpcio==1.62.3
 # Build Pyarrow  (Python package)
 #######################################################
 echo "Entering Pyarrow source directory..."
-cd arrow
+cd pyarrow
 cd cpp
 mkdir -p release && cd release
 cmake -DCMAKE_BUILD_TYPE=Release \
