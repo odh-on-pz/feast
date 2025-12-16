@@ -60,33 +60,33 @@ echo "Entering Pyarrow source directory..."
 cd pyarrow
 cd cpp
 mkdir -p release && cd release
-cmake -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_INSTALL_PREFIX=/usr/local \
-      -DARROW_PYTHON=ON \
-      -DARROW_PARQUET=ON \
-      -DARROW_ORC=ON \
-      -DARROW_FILESYSTEM=ON \
-      -DARROW_FLIGHT=ON \
-      -DARROW_FLIGHT_SQL=ON \
-      -DARROW_WITH_LZ4=ON \
-      -DARROW_WITH_ZSTD=ON \
-      -DARROW_WITH_SNAPPY=ON \
-      -DARROW_JSON=ON \
-      -DARROW_CSV=ON \
-      -DARROW_DATASET=ON \
-      -DARROW_S3=ON \
-      -DARROW_BUILD_TESTS=OFF \
-      -DARROW_SUBSTRAIT=ON \
-      -DProtobuf_SOURCE=BUNDLED \
-      -DARROW_DEPENDENCY_SOURCE=BUNDLED \
-    ..
-make -j$(nproc)
-make install
+# cmake -DCMAKE_BUILD_TYPE=Release \
+#       -DCMAKE_INSTALL_PREFIX=/usr/local \
+#       -DARROW_PYTHON=ON \
+#       -DARROW_PARQUET=ON \
+#       -DARROW_ORC=ON \
+#       -DARROW_FILESYSTEM=ON \
+#       -DARROW_FLIGHT=ON \
+#       -DARROW_FLIGHT_SQL=ON \
+#       -DARROW_WITH_LZ4=ON \
+#       -DARROW_WITH_ZSTD=ON \
+#       -DARROW_WITH_SNAPPY=ON \
+#       -DARROW_JSON=ON \
+#       -DARROW_CSV=ON \
+#       -DARROW_DATASET=ON \
+#       -DARROW_S3=ON \
+#       -DARROW_BUILD_TESTS=OFF \
+#       -DARROW_SUBSTRAIT=ON \
+#       -DProtobuf_SOURCE=BUNDLED \
+#       -DARROW_DEPENDENCY_SOURCE=BUNDLED \
+#     ..
+# make -j$(nproc)
+# make install
 cd ../../python
 export BUILD_TYPE=release
-python${PYTHON_VERSION} setup.py build_ext --build-type=$BUILD_TYPE --bundle-arrow-cpp bdist_wheel
+# python${PYTHON_VERSION} setup.py build_ext --build-type=$BUILD_TYPE --bundle-arrow-cpp bdist_wheel
 ls dist/*.whl >/dev/null
-cp -v dist/*.whl /wheelhouse/
+# cp -v dist/*.whl /wheelhouse/
 cd $WORKDIR
 
 #######################################################
