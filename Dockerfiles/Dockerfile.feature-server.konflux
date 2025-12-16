@@ -11,8 +11,8 @@ COPY prebuild-power.sh /prebuild-power.sh
 RUN chmod +x /prebuild-power.sh
 
 COPY duckdb ./duckdb
-
 COPY pyarrow ./pyarrow
+COPY milvus-lite ./milvus-lite
 
 # Run prebuild script conditionally (Power only)
 RUN if [ "$(uname -m)" = "ppc64le" ]; then \

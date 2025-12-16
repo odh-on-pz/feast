@@ -10,7 +10,7 @@ CMAKE_REQUIRED_VERSION=3.30.5
 
 dnf install -y gcc-toolset-13 make cmake ninja-build libomp-devel \
                git python${PYTHON_VERSION} python${PYTHON_VERSION}-devel python${PYTHON_VERSION}-pip \
-               openssl openssl-devel zlib-devel libuuid-devel 
+               openssl openssl-devel zlib-devel libuuid-devel
 
 # Enable GCC toolset
 source /opt/rh/gcc-toolset-13/enable
@@ -87,7 +87,7 @@ export BUILD_TYPE=release
 python${PYTHON_VERSION} setup.py build_ext --build-type=$BUILD_TYPE --bundle-arrow-cpp bdist_wheel
 ls dist/*.whl >/dev/null
 cp -v dist/*.whl /wheelhouse/
-cd ../../..
+cd $WORKDIR
 
 #######################################################
 # Build Milvus-Lite  (Python package)
@@ -102,10 +102,7 @@ export CC=gcc
 export CXX=g++
 export CXXFLAGS="-std=c++17"
 
-python${PYTHON_VERSION} -m pip install conan==1.64.1 setuptools==70.0.0
+python${PYTHON_VERSION} -m pip install conan==1.64.1
 
-git clone https://github.com/milvus-io/milvus-lite
 cd milvus-lite/python
-git checkout v2.4.12
-git submodule update --init --recursive
 python${PYTHON_VERSION} -m pip install -v -e .

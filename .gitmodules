@@ -4,3 +4,6 @@
 [submodule "sdk/python/feast/infra/feature_servers/multicloud/pyarrow"]
 	path = sdk/python/feast/infra/feature_servers/multicloud/pyarrow
 	url = https://github.com/apache/arrow.git
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/milvus-lite"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/milvus-lite
+	url = https://github.com/milvus-io/milvus-lite
