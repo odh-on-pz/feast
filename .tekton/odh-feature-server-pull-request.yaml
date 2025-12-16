@@ -39,7 +39,7 @@ spec:
   - name: path-context
     value: "sdk/python/feast/infra/feature_servers/multicloud"
   - name: hermetic
-    value: false
+    value: true
   - name: prefetch-input
     value: |
       [
@@ -47,13 +47,7 @@ spec:
           "type": "pip",
           "path": ".",
           "requirements_files": [
-            "sdk/python/feast/infra/feature_servers/multicloud/requirements.txt",
             "sdk/python/feast/infra/feature_servers/multicloud/requirements-ppc64le.txt"
-          ],
-          "requirements_build_files": [
-            "sdk/python/requirements/py3.11-minimal-requirements.txt",
-            "sdk/python/requirements/py3.11-minimal-sdist-requirements.txt",
-            "sdk/python/requirements/py3.11-minimal-sdist-requirements-build.txt"
           ],
           "allow_binary": "true"
         },
@@ -72,8 +66,6 @@ spec:
     value: true
   - name: build-platforms
     value:
-    - linux/x86_64
-    - linux-m2xlarge/arm64
     - linux/ppc64le
   - name: image-expires-after
     value: 5d

@@ -1,9 +1,7 @@
 metadata:
   version: "1.0"
 
-artifacts: []
-
-# NOTE:
-# Hermeto/Cachi2 must NOT fetch non-RH artifacts (e.g., GitHub tarballs).
-# DuckDB and Apache Arrow are now built via git clone.
-
+artifacts:
+  - download_url: "https://github.com/boostorg/boost/releases/download/boost-1.88.0/boost-1.88.0-cmake.tar.gz"
+    checksum: "sha256:dcea50f40ba1ecfc448fdf886c0165cf3e525fef2c9e3e080b9804e8117b9694"
+    filename: "boost-1.88.0-cmake.tar.gz"

@@ -10,7 +10,7 @@ CMAKE_REQUIRED_VERSION=3.30.5
 
 dnf install -y gcc-toolset-13 make cmake ninja-build libomp-devel \
                git python${PYTHON_VERSION} python${PYTHON_VERSION}-devel python${PYTHON_VERSION}-pip \
-               openssl openssl-devel zlib-devel libuuid-devel 
+               openssl openssl-devel zlib-devel libuuid-devel
 
 # Enable GCC toolset
 source /opt/rh/gcc-toolset-13/enable
@@ -20,49 +20,19 @@ export CXX=/opt/rh/gcc-toolset-13/root/usr/bin/g++
 # Symlink the system-provided libatomic.so.1 so the compiler can resolve it.
 ln -s /usr/lib64/libatomic.so.1   /opt/rh/gcc-toolset-13/root/usr/lib/gcc/ppc64le-redhat-linux/13/libatomic.so
 
-# Ensure CXXFLAGS and LINKFLAGS are initialized
-: "${CMAKE_ARGS:=""}"
-: "${CXXFLAGS:=""}"
-: "${CFLAGS:=""}"
-: "${LINKFLAGS:=""}"
-
 # Installing Python build dependencies
-python${PYTHON_VERSION} -m pip install build wheel setuptools ninja pybind11 numpy==2.3.3 setuptools_scm Cython==3.0.8
+python${PYTHON_VERSION} -m pip install build wheel setuptools ninja pybind11 numpy==2.3.3 setuptools_scm Cython
 
 # Directory to collect built wheels
 mkdir -p /wheelhouse
 
-#######################################################
-# Build DuckDB (Python package)
-#######################################################
-echo "Entering DuckDB source directory..."
-git clone https://github.com/duckdb/duckdb.git
-cd duckdb
-git checkout v1.1.3
-cd tools/pythonpkg
-export SETUPTOOLS_SCM_PRETEND_VERSION=1.1.3
-python${PYTHON_VERSION} -m build --wheel --no-isolation
-# Cleanup
-unset SETUPTOOLS_SCM_PRETEND_VERSION
-ls dist/*.whl >/dev/null
-cp -v dist/*.whl /wheelhouse/
-cd $WORKDIR
-
-#######################################################
-# Build gRPC  (Python package)
-#######################################################
-echo "Building grpcio..."
-export GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1
-pip install grpcio==1.62.3
 
 #######################################################
 # Build Pyarrow  (Python package)
 #######################################################
 echo "Entering Pyarrow source directory..."
-git clone https://github.com/apache/arrow.git
-cd arrow
-git checkout apache-arrow-21.0.0
-git submodule update --init --recursive
+export Boost_SOURCE_DIR=/tmp/boost-1.88.0
+cd pyarrow
 cd cpp
 mkdir -p release && cd release
 cmake -DCMAKE_BUILD_TYPE=Release \
@@ -92,25 +62,7 @@ export BUILD_TYPE=release
 python${PYTHON_VERSION} setup.py build_ext --build-type=$BUILD_TYPE --bundle-arrow-cpp bdist_wheel
 ls dist/*.whl >/dev/null
 cp -v dist/*.whl /wheelhouse/
-cd ../../..
+cd $WORKDIR
 
 #######################################################
-# Build Milvus-Lite  (Python package)
-#######################################################
-echo "Building milvus-lite..."
-dnf remove -y gcc-toolset-13
 
-dnf install -y perl ncurses-devel wget openblas-devel cargo gcc gcc-c++ libstdc++-static which libaio \
-               libtool m4 autoconf automake zlib-devel libffi-devel scl-utils xz
-
-export CC=gcc
-export CXX=g++
-export CXXFLAGS="-std=c++17"
-
-python${PYTHON_VERSION} -m pip install conan==1.64.1 setuptools==70.0.0
-
-git clone https://github.com/milvus-io/milvus-lite
-cd milvus-lite/python
-git checkout v2.4.12
-git submodule update --init --recursive
-python${PYTHON_VERSION} -m pip install -v -e .
