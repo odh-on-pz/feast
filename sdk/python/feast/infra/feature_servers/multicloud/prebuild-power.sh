@@ -26,12 +26,69 @@ python${PYTHON_VERSION} -m pip install build wheel setuptools ninja pybind11 num
 # Directory to collect built wheels
 mkdir -p /wheelhouse
 
+cd /tmp/boost-1.88.0
+mkdir Boost_prefix
+export BOOST_PREFIX=$(pwd)/Boost_prefix
+
+INCLUDE_PATH="${BOOST_PREFIX}/include"
+LIBRARY_PATH="${BOOST_PREFIX}/lib"
+
+export CC=$(which gcc)
+export CXX=$(which g++)
+export target_platform=$(uname)-$(uname -m)
+CXXFLAGS="${CXXFLAGS} -fPIC"
+TOOLSET=gcc
+
+ # http://www.boost.org/build/doc/html/bbv2/tasks/crosscompile.html
+cat <<EOF > tools/build/example/site-config.jam
+using ${TOOLSET} : : ${CXX} ;
+EOF
+
+LINKFLAGS="${LINKFLAGS} -L${LIBRARY_PATH}"
+
+CXXFLAGS="$(echo ${CXXFLAGS} | sed 's/ -march=[^ ]*//g' | sed 's/ -mcpu=[^ ]*//g' |sed 's/ -mtune=[^ ]*//g')" \
+CFLAGS="$(echo ${CFLAGS} | sed 's/ -march=[^ ]*//g' | sed 's/ -mcpu=[^ ]*//g' |sed 's/ -mtune=[^ ]*//g')" \
+    CXX=${CXX_FOR_BUILD:-${CXX}} CC=${CC_FOR_BUILD:-${CC}} ./bootstrap.sh \
+    --prefix="${BOOST_PREFIX}" \
+    --without-libraries=python \
+    --with-toolset=${TOOLSET} \
+    --with-icu="${BOOST_PREFIX}" || (cat bootstrap.log; exit 1)
+	 ADDRESS_MODEL=64
+    ARCHITECTURE=power
+	ABI="sysv"
+	 BINARY_FORMAT="elf"
+
+	 export CPU_COUNT=$(nproc)
+
+echo " Building and installing Boost...."
+./b2 -q \
+    variant=release \
+    address-model="${ADDRESS_MODEL}" \
+    architecture="${ARCHITECTURE}" \
+    binary-format="${BINARY_FORMAT}" \
+    abi="${ABI}" \
+    debug-symbols=off \
+    threading=multi \
+    runtime-link=shared \
+    link=shared \
+    toolset=${TOOLSET} \
+    include="${INCLUDE_PATH}" \
+    cxxflags="${CXXFLAGS} -Wno-deprecated-declarations" \
+    linkflags="${LINKFLAGS}" \
+    --layout=system \
+    -j"${CPU_COUNT}" \
+    install
+
+# Remove Python headers as we don't build Boost.Python.
+rm "${BOOST_PREFIX}/include/boost/python.hpp"
+rm -r "${BOOST_PREFIX}/include/boost/python"
+
+cd $WORKDIR
 
 #######################################################
 # Build Pyarrow  (Python package)
 #######################################################
 echo "Entering Pyarrow source directory..."
-export Boost_SOURCE_DIR=/tmp/boost-1.88.0
 cd pyarrow
 cd cpp
 mkdir -p release && cd release
@@ -52,8 +109,8 @@ cmake -DCMAKE_BUILD_TYPE=Release \
       -DARROW_S3=ON \
       -DARROW_BUILD_TESTS=OFF \
       -DARROW_SUBSTRAIT=ON \
-      -DProtobuf_SOURCE=BUNDLED \
-      -DARROW_DEPENDENCY_SOURCE=BUNDLED \
+      -DBoost_DIR=${BOOST_PREFIX} \
+      -DBoost_INCLUDE_DIR=${BOOST_PREFIX}/include/ \
     ..
 make -j$(nproc)
 make install
