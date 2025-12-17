@@ -8,6 +8,15 @@ WORKDIR=$(pwd)
 CMAKE_VERSION=3.30.5
 CMAKE_REQUIRED_VERSION=3.30.5
 
+
+: "${CFLAGS:=}"
+: "${CXXFLAGS:=}"
+: "${LDFLAGS:=}"
+: "${LINKFLAGS:=}"
+: "${CC_FOR_BUILD:=}"
+: "${CXX_FOR_BUILD:=}"
+
+
 dnf install -y gcc-toolset-13 make cmake ninja-build libomp-devel \
                git python${PYTHON_VERSION} python${PYTHON_VERSION}-devel python${PYTHON_VERSION}-pip \
                openssl openssl-devel zlib-devel libuuid-devel
