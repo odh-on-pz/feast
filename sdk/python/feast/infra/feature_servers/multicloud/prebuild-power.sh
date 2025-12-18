@@ -35,7 +35,7 @@ python${PYTHON_VERSION} -m pip install build wheel setuptools ninja pybind11 num
 # Directory to collect built wheels
 mkdir -p /wheelhouse
 
-cd /tmp/boost-1.88.0
+cd /tmp/boost-1.81.0
 mkdir Boost_prefix
 export BOOST_PREFIX=$(pwd)/Boost_prefix
 

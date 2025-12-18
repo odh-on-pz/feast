@@ -2,6 +2,6 @@ metadata:
   version: "1.0"
 
 artifacts:
-  - download_url: "https://github.com/boostorg/boost/releases/download/boost-1.88.0/boost-1.88.0-cmake.tar.gz"
-    checksum: "sha256:dcea50f40ba1ecfc448fdf886c0165cf3e525fef2c9e3e080b9804e8117b9694"
-    filename: "boost-1.88.0-cmake.tar.gz"
+  - download_url: "https://github.com/boostorg/boost/releases/download/boost-1.81.0/boost-1.81.0.tar.gz"
+    checksum: "sha256:121da556b718fd7bd700b5f2e734f8004f1cfa78b7d30145471c526ba75a151c"
+    filename: "boost-1.81.0.tar.gz"

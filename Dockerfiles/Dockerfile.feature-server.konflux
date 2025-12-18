@@ -13,11 +13,11 @@ RUN chmod +x /prebuild-power.sh
 COPY pyarrow ./pyarrow
 
 # Prefetched artifact
-RUN cp /cachi2/output/deps/generic/boost-1.88.0-cmake.tar.gz /tmp/
+RUN cp /cachi2/output/deps/generic/boost-1.81.0.tar.gz /tmp/
 
 # Extract (Power only)
 RUN if [ "$(uname -m)" = "ppc64le" ]; then \
-        tar -xzf /tmp/boost-1.88.0-cmake.tar.gz -C /tmp; \
+        tar -xzf /tmp/boost-1.81.0.tar.gz -C /tmp; \
     fi
 
 
