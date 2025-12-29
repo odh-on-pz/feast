@@ -35,6 +35,229 @@ python${PYTHON_VERSION} -m pip install build wheel setuptools ninja pybind11 num
 # Directory to collect built wheels
 mkdir -p /wheelhouse
 
+################## flex installing ############################
+cd /tmp/flex-2.6.4
+echo "Configuring flex installation..."
+./configure --prefix=/usr/local
+echo "Compiling the source code for flex..."
+make -j$(nproc)
+echo "Installing flex..."
+make install
+cd $WORKDIR
+
+#################### bison installing #############################
+cd /tmp/bison-3.8.2
+echo "Configuring bison installation..."
+./configure --prefix=/usr/local
+echo "Compiling the source code bison..."
+make -j$(nproc)
+echo "Installing bison..."
+make install
+cd $WORKDIR
+
+##################### gflags installing ##############################
+cd gflags
+mkdir build && cd build
+echo "Running cmake to configure the build..."
+cmake ..
+echo "Compiling the source code gflags..."
+make -j$(nproc)
+echo "Installing gflags..."
+make install
+cd $WORKDIR
+
+
+##################### Installing c-ares ##########################
+cd c-ares
+target_platform=$(uname)-$(uname -m)
+AR=$(which ar)
+PKG_NAME=c-ares
+
+mkdir -p c_ares_prefix
+export C_ARES_PREFIX=$(pwd)/c_ares_prefix
+
+echo "Building ${PKG_NAME}."
+
+# Isolate the build.
+mkdir build && cd build
+
+if [[ "$PKG_NAME" == *static ]]; then
+  CARES_STATIC=ON
+  CARES_SHARED=OFF
+else
+  CARES_STATIC=OFF
+  CARES_SHARED=ON
+fi
+
+if [[ "${target_platform}" == Linux-* ]]; then
+  CMAKE_ARGS="${CMAKE_ARGS} -DCMAKE_AR=${AR}"
+fi
+
+# Generate the build files.
+echo "Generating the build files..."
+cmake ${CMAKE_ARGS} .. \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX="$C_ARES_PREFIX" \
+      -DCARES_STATIC=${CARES_STATIC} \
+      -DCARES_SHARED=${CARES_SHARED} \
+      -DCARES_INSTALL=ON \
+      -DCMAKE_INSTALL_LIBDIR=lib \
+      -GNinja
+      #${SRC_DIR}
+
+# Build.
+echo "Building c-areas..."
+ninja || exit 1
+
+# Installing
+echo "Installing c-areas..."
+ninja install || exit 1
+cd $WORKDIR
+
+
+################## rapidjson installing ########################
+cd rapidjson
+mkdir build && cd build
+echo "Running cmake to configure the build..."
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local
+echo "Compiling the source code for rapidjson..."
+make -j$(nproc)
+echo "Installing rapidjson"
+make install
+cd $WORKDIR
+
+################### xsimd installing ############################
+cd xsimd
+mkdir build && cd build
+echo "Running cmake to configure the build for xsimd.."
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local
+echo "Compiling the source code for xsimd..."
+make -j$(nproc)
+echo "Installing xsimd..."
+make install
+cd $WORKDIR
+
+#################### snappy installing ###########################
+cd snappy
+mkdir -p local/snappy
+export SNAPPY_PREFIX=$(pwd)/local/snappy
+mkdir build
+cd build
+echo "Running cmake to configure the build for snappy..."
+cmake -DCMAKE_INSTALL_PREFIX=$SNAPPY_PREFIX \
+      -DBUILD_SHARED_LIBS=ON \
+      -DCMAKE_INSTALL_LIBDIR=lib \
+      ..
+echo "Compiling the source code for snappy..."
+make -j$(nproc)
+echo "Installing snappy..."
+make install
+cd ..
+cd $WORKDIR
+
+#################### libzstd installing ##########################
+cd zstd
+echo "Compiling the source code for libzstd..."
+make
+echo "Installing libzstd..."
+make install
+export ZSTD_HOME=/usr/local
+export CMAKE_PREFIX_PATH=$ZSTD_HOME
+export LD_LIBRARY_PATH=$ZSTD_HOME/lib64:$LD_LIBRARY_PATH
+cd $WORKDIR
+
+
+#################### re2 installing ###############################
+cd re2
+mkdir re2-prefix
+export RE2_PREFIX=$(pwd)/re2-prefix
+export CPU_COUNT=`nproc`
+
+mkdir build-cmake
+pushd build-cmake
+
+echo "Running cmake to configure the build for re2..."
+cmake ${CMAKE_ARGS} -GNinja \
+  -DCMAKE_PREFIX_PATH=$RE2_PREFIX \
+  -DCMAKE_INSTALL_PREFIX="${RE2_PREFIX}" \
+  -DCMAKE_INSTALL_LIBDIR=lib \
+  -DENABLE_TESTING=OFF \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DBUILD_SHARED_LIBS=ON \
+  ..
+echo "Installing re2..."
+  ninja -v install
+  popd
+echo "Running make shared-install......"
+make -j "${CPU_COUNT}" prefix=${RE2_PREFIX} shared-install
+cd $WORKDIR
+
+
+#################### utf8proc installing #########################
+cd utf8proc
+mkdir utf8proc_prefix
+export UTF8PROC_PREFIX=$(pwd)/utf8proc_prefix
+
+# Create build directory
+mkdir build
+cd build
+echo "Running cmake to configure the build for utf8proc..."
+# Run cmake to configure the build
+cmake -G "Unix Makefiles" \
+  -DCMAKE_BUILD_TYPE="Release" \
+  -DCMAKE_INSTALL_PREFIX="${UTF8PROC_PREFIX}" \
+  -DCMAKE_POSITION_INDEPENDENT_CODE=1 \
+  -DBUILD_SHARED_LIBS=1 \
+  ..
+echo  "Build and install utf8proc"
+cmake --build .
+
+echo "Installing utf8proc ..."
+cmake --build . --target install
+cd $WORKDIR
+
+################## abseil_cpp cloning #########################
+
+################## libprotobuf installing #####################
+export C_COMPILER=$(which gcc)
+export CXX_COMPILER=$(which g++)
+
+#Build libprotobuf
+cd protobuf
+
+LIBPROTO_DIR=$(pwd)
+mkdir -p $LIBPROTO_DIR/local/libprotobuf
+LIBPROTO_INSTALL=$LIBPROTO_DIR/local/libprotobuf
+
+rm -rf ./third_party/googletest | true
+rm -rf ./third_party/abseil-cpp | true
+
+cp -r /abseil-cpp ./third_party/
+
+mkdir build
+cd build
+echo "Running cmake to configure the build for libprotobuf..."
+cmake -G "Ninja" \
+   ${CMAKE_ARGS} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_CXX_STANDARD=17 \
+    -DCMAKE_C_COMPILER=$C_COMPILER \
+    -DCMAKE_CXX_COMPILER=$CXX_COMPILER \
+    -DCMAKE_INSTALL_PREFIX=$LIBPROTO_INSTALL \
+    -Dprotobuf_BUILD_TESTS=OFF \
+    -Dprotobuf_BUILD_LIBUPB=OFF \
+    -Dprotobuf_BUILD_SHARED_LIBS=ON \
+    -Dprotobuf_ABSL_PROVIDER="module" \
+    -Dprotobuf_JSONCPP_PROVIDER="package" \
+    -Dprotobuf_USE_EXTERNAL_GTEST=OFF \
+    ..
+echo  "Building libprotobuf..."
+cmake --build . --verbose
+echo  "Installing libprotobuf..."
+cmake --install .
+cd $WORKDIR
+
+################### boost_cpp installing ##########################
 cd /tmp/boost-1.81.0
 mkdir Boost_prefix
 export BOOST_PREFIX=$(pwd)/Boost_prefix
