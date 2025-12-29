@@ -15,7 +15,7 @@ CMAKE_REQUIRED_VERSION=3.30.5
 : "${LINKFLAGS:=}"
 : "${CC_FOR_BUILD:=}"
 : "${CXX_FOR_BUILD:=}"
-
+: "${CMAKE_ARGS:=}"
 
 dnf install -y gcc-toolset-13 make cmake ninja-build libomp-devel \
                git python${PYTHON_VERSION} python${PYTHON_VERSION}-devel python${PYTHON_VERSION}-pip \
@@ -34,6 +34,11 @@ python${PYTHON_VERSION} -m pip install build wheel setuptools ninja pybind11 set
 
 # Directory to collect built wheels
 mkdir -p /wheelhouse
+
+############### Numpy Installing ###########################
+cd numpy
+python${PYTHON_VERSION} -m pip install .
+cd $WORKDIR
 
 ################## flex installing ############################
 cd /tmp/flex-2.6.4

@@ -31,3 +31,6 @@
 [submodule "sdk/python/feast/infra/feature_servers/multicloud/abseil-cpp"]
 	path = sdk/python/feast/infra/feature_servers/multicloud/abseil-cpp
 	url = https://github.com/abseil/abseil-cpp.git
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/numpy"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/numpy
+	url = https://github.com/numpy/numpy.git
