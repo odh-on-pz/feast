@@ -36,11 +36,13 @@ python${PYTHON_VERSION} -m pip install build wheel setuptools ninja pybind11 set
 mkdir -p /wheelhouse
 
 ############### Numpy Installing ###########################
+echo "Installing numpy ..."
 cd numpy
 python${PYTHON_VERSION} -m pip install .
 cd $WORKDIR
 
 ################## flex installing ############################
+echo "Entering flex source directory..."
 cd /tmp/flex-2.6.4
 echo "Configuring flex installation..."
 ./configure --prefix=/usr/local
@@ -51,6 +53,7 @@ make install
 cd $WORKDIR
 
 #################### bison installing #############################
+echo "Entering Bison source directory..."
 cd /tmp/bison-3.8.2
 echo "Configuring bison installation..."
 ./configure --prefix=/usr/local
@@ -61,9 +64,10 @@ make install
 cd $WORKDIR
 
 ##################### gflags installing ##############################
+echo "Entering gflags source directory..."
 cd gflags
 mkdir build && cd build
-echo "Running cmake to configure the build..."
+echo "Running cmake to configure the gflags build..."
 cmake ..
 echo "Compiling the source code gflags..."
 make -j$(nproc)
@@ -73,6 +77,7 @@ cd $WORKDIR
 
 
 ##################### Installing c-ares ##########################
+echo "Entering c-ares source directory..."
 cd c-ares
 target_platform=$(uname)-$(uname -m)
 AR=$(which ar)
@@ -121,9 +126,10 @@ cd $WORKDIR
 
 
 ################## rapidjson installing ########################
+echo "Entering rapidson source directory..."
 cd rapidjson
 mkdir build && cd build
-echo "Running cmake to configure the build..."
+echo "Running cmake to configure the rapidjson build..."
 cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local
 echo "Compiling the source code for rapidjson..."
 make -j$(nproc)
@@ -132,6 +138,7 @@ make install
 cd $WORKDIR
 
 ################### xsimd installing ############################
+echo "Entering xsimd source directory..."
 cd xsimd
 mkdir build && cd build
 echo "Running cmake to configure the build for xsimd.."
@@ -143,6 +150,7 @@ make install
 cd $WORKDIR
 
 #################### snappy installing ###########################
+echo "Entering snappy source directory..."
 cd snappy
 mkdir -p local/snappy
 export SNAPPY_PREFIX=$(pwd)/local/snappy
@@ -161,6 +169,7 @@ cd ..
 cd $WORKDIR
 
 #################### libzstd installing ##########################
+echo "Entering libzstd source directory..."
 cd zstd
 echo "Compiling the source code for libzstd..."
 make
@@ -173,6 +182,7 @@ cd $WORKDIR
 
 
 #################### re2 installing ###############################
+echo "Entering re2 source directory..."
 cd re2
 mkdir re2-prefix
 export RE2_PREFIX=$(pwd)/re2-prefix
@@ -199,6 +209,7 @@ cd $WORKDIR
 
 
 #################### utf8proc installing #########################
+echo "Entering utf8proc source directory..."
 cd utf8proc
 mkdir utf8proc_prefix
 export UTF8PROC_PREFIX=$(pwd)/utf8proc_prefix
@@ -226,6 +237,8 @@ cd $WORKDIR
 ################## libprotobuf installing #####################
 export C_COMPILER=$(which gcc)
 export CXX_COMPILER=$(which g++)
+
+echo "Entering protobuf source directory..."
 
 #Build libprotobuf
 cd protobuf
