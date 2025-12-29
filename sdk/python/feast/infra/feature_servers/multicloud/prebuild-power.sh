@@ -8,7 +8,6 @@ WORKDIR=$(pwd)
 CMAKE_VERSION=3.30.5
 CMAKE_REQUIRED_VERSION=3.30.5
 
-
 : "${CFLAGS:=}"
 : "${CXXFLAGS:=}"
 : "${LDFLAGS:=}"
@@ -23,7 +22,7 @@ CMAKE_REQUIRED_VERSION=3.30.5
 
 dnf install -y gcc-toolset-13 make cmake ninja-build libomp-devel \
                git python${PYTHON_VERSION} python${PYTHON_VERSION}-devel python${PYTHON_VERSION}-pip \
-               openssl openssl-devel zlib-devel libuuid-devel
+               openssl openssl-devel zlib-devel libuuid-devel lz4-devel
 
 # Enable GCC toolset
 source /opt/rh/gcc-toolset-13/enable
@@ -31,7 +30,7 @@ export CXX=/opt/rh/gcc-toolset-13/root/usr/bin/g++
 
 # GCC toolset 13 does not include libatomic, causing '-latomic not found' during linking.
 # Symlink the system-provided libatomic.so.1 so the compiler can resolve it.
-ln -s /usr/lib64/libatomic.so.1   /opt/rh/gcc-toolset-13/root/usr/lib/gcc/ppc64le-redhat-linux/13/libatomic.so
+ln -sf /usr/lib64/libatomic.so.1 /opt/rh/gcc-toolset-13/root/usr/lib/gcc/ppc64le-redhat-linux/13/libatomic.so
 
 # Installing Python build dependencies
 python${PYTHON_VERSION} -m pip install build wheel setuptools ninja pybind11 setuptools_scm Cython
