@@ -30,7 +30,7 @@ export CXX=/opt/rh/gcc-toolset-13/root/usr/bin/g++
 ln -s /usr/lib64/libatomic.so.1   /opt/rh/gcc-toolset-13/root/usr/lib/gcc/ppc64le-redhat-linux/13/libatomic.so
 
 # Installing Python build dependencies
-python${PYTHON_VERSION} -m pip install build wheel setuptools ninja pybind11 numpy==2.3.3 setuptools_scm Cython
+python${PYTHON_VERSION} -m pip install build wheel setuptools ninja pybind11 setuptools_scm Cython
 
 # Directory to collect built wheels
 mkdir -p /wheelhouse
