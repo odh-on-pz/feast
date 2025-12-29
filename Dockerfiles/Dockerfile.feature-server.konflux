@@ -22,11 +22,13 @@ COPY re2 ./re2
 COPY utf8proc ./utf8proc
 COPY protobuf ./protobuf
 COPY abseil-cpp ./abseil-cpp
+COPY orc ./orc
 
 # Prefetched artifacts
 RUN cp /cachi2/output/deps/generic/boost-1.81.0.tar.gz /tmp/ \
  && cp /cachi2/output/deps/generic/flex-2.6.4.tar.gz /tmp/ \
- && cp /cachi2/output/deps/generic/bison-3.8.2.tar.gz /tmp/
+ && cp /cachi2/output/deps/generic/bison-3.8.2.tar.gz /tmp/ \
+ && cp /cachi2/output/deps/generic/orc.patch /tmp/
 
 # Extract (Power only)
 RUN if [ "$(uname -m)" = "ppc64le" ]; then \

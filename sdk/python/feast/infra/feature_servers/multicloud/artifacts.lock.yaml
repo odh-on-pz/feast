@@ -13,3 +13,7 @@ artifacts:
   - download_url: "https://mirrors.cloud.tencent.com/gnu/bison/bison-3.8.2.tar.gz"
     checksum: "sha256:06c9e13bdf7eb24d4ceb6b59205a4f67c2c7e7213119644430fe82fbd14a0abb"
     filename: "bison-3.8.2.tar.gz"
+
+  - download_url: "https://raw.githubusercontent.com/ppc64le/build-scripts/refs/heads/master/o/orc/orc.patch"
+    checksum: "sha256:be350a38811c8d405a2601f7ef62e5d4348e0fb1b826a9c0f91b6928b00a30f0"
+    filename: "orc.patch"

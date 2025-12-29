@@ -16,6 +16,8 @@ CMAKE_REQUIRED_VERSION=3.30.5
 : "${CC_FOR_BUILD:=}"
 : "${CXX_FOR_BUILD:=}"
 : "${CMAKE_ARGS:=}"
+: "${CPPFLAGS:=}"
+
 
 dnf install -y gcc-toolset-13 make cmake ninja-build libomp-devel \
                git python${PYTHON_VERSION} python${PYTHON_VERSION}-devel python${PYTHON_VERSION}-pip \
@@ -250,7 +252,7 @@ LIBPROTO_INSTALL=$LIBPROTO_DIR/local/libprotobuf
 rm -rf ./third_party/googletest | true
 rm -rf ./third_party/abseil-cpp | true
 
-cp -r /abseil-cpp ./third_party/
+cp -r $WORKDIR/abseil-cpp ./third_party/
 
 mkdir build
 cd build
@@ -274,6 +276,81 @@ cmake --build . --verbose
 echo  "Installing libprotobuf..."
 cmake --install .
 cd $WORKDIR
+
+################### orc installing ###############################
+echo "Entering orc source directory..."
+cd orc
+patch -p1 < /tmp/orc.patch
+mkdir orc_prefix
+export ORC_PREFIX=$(pwd)/orc_prefix
+
+mkdir -p build
+cd build
+
+export PROTOBUF_PREFIX=$LIBPROTO_INSTALL
+export CMAKE_PREFIX_PATH=$LIBPROTO_INSTALL
+export LD_LIBRARY_PATH=$LIBPROTO_INSTALL/lib64
+
+export CC=$(which gcc)
+export CXX=$(which g++)
+export GCC=$CC
+export GXX=$CXX
+
+export HOST=$(uname)-$(uname -m)
+export HOST=$(uname)-$(uname -m)
+
+CPPFLAGS="${CPPFLAGS} -Wl,-rpath,$VIRTUAL_ENV_PATH/**/lib"
+
+
+declare -a _CMAKE_EXTRA_CONFIG
+if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
+    _CMAKE_EXTRA_CONFIG+=(-DHAS_PRE_1970_EXITCODE=0)
+    _CMAKE_EXTRA_CONFIG+=(-DHAS_PRE_1970_EXITCODE__TRYRUN_OUTPUT=)
+    _CMAKE_EXTRA_CONFIG+=(-DHAS_POST_2038_EXITCODE=0)
+    _CMAKE_EXTRA_CONFIG+=(-DHAS_POST_2038_EXITCODE__TRYRUN_OUTPUT=)
+fi
+if [[ ${HOST} =~ .*darwin.* ]]; then
+    _CMAKE_EXTRA_CONFIG+=(-DCMAKE_AR=${AR})
+    _CMAKE_EXTRA_CONFIG+=(-DCMAKE_RANLIB=${RANLIB})
+    _CMAKE_EXTRA_CONFIG+=(-DCMAKE_LINKER=${LD})
+fi
+if [[ ${HOST} =~ .*Linux.* ]]; then
+    CXXFLAGS="${CXXFLAGS//-std=c++17/-std=c++11}"
+    LIBPTHREAD=$(find ${PREFIX} -name "libpthread.so")
+    _CMAKE_EXTRA_CONFIG+=(-DPTHREAD_LIBRARY=${LIBPTHREAD})
+fi
+
+CPPFLAGS="${CPPFLAGS} -Wl,-rpath,$VIRTUAL_ENV_PATH/**/lib"
+echo "Running cmake to configure the build for orc..."
+cmake ${CMAKE_ARGS} \
+    -DCMAKE_PREFIX_PATH=$ORC_PREFIX \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_SHARED_LIBS=ON \
+    -DBUILD_JAVA=False \
+    -DLZ4_HOME=/usr \
+    -DZLIB_HOME=/usr \
+    -DZSTD_HOME=/usr/local \
+    -DCMAKE_POLICY_DEFAULT_CMP0074=NEW \
+    -DProtobuf_ROOT=$PROTOBUF_PREFIX \
+    -DPROTOBUF_HOME=$PROTOBUF_PREFIX \
+    -DPROTOBUF_EXECUTABLE=$PROTOBUF_PREFIX/bin/protoc \
+    -DSNAPPY_HOME=$SNAPPY_PREFIX \
+    -DBUILD_LIBHDFSPP=NO \
+    -DBUILD_CPP_TESTS=OFF \
+    -DCMAKE_INSTALL_PREFIX=$ORC_PREFIX \
+    -DCMAKE_C_COMPILER=$(type -p ${CC})     \
+    -DCMAKE_CXX_COMPILER=$(type -p ${CXX})  \
+    -DCMAKE_C_FLAGS="$CFLAGS"  \
+    -DCMAKE_CXX_FLAGS="$CXXFLAGS -Wno-unused-parameter" \
+    "${_CMAKE_EXTRA_CONFIG[@]}" \
+    -GNinja ..
+
+ninja
+echo  "Installing orc..."
+ninja install
+
+cd $WORKDIR
+
 
 ################### boost_cpp installing ##########################
 cd /tmp/boost-1.81.0
