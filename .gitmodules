@@ -43,3 +43,6 @@
 [submodule "sdk/python/feast/infra/feature_servers/multicloud/grpc"]
 	path = sdk/python/feast/infra/feature_servers/multicloud/grpc
 	url = https://github.com/grpc/grpc
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/OpenBLAS"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/OpenBLAS
+	url = https://github.com/OpenMathLib/OpenBLAS

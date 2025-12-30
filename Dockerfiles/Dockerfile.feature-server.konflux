@@ -25,6 +25,7 @@ COPY abseil-cpp ./abseil-cpp
 COPY orc ./orc
 COPY thrift ./thrift
 COPY grpc ./grpc
+COPY OpenBLAS ./OpenBLAS
 
 # Prefetched artifacts
 RUN cp /cachi2/output/deps/generic/boost-1.81.0.tar.gz /tmp/ \
