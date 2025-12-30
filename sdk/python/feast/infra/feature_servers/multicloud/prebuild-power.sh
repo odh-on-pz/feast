@@ -279,78 +279,78 @@ cmake --install .
 cd $WORKDIR
 
 ################### orc installing ###############################
-echo "Entering orc source directory..."
-cd orc
-patch -p1 < /tmp/orc.patch
-mkdir orc_prefix
-export ORC_PREFIX=$(pwd)/orc_prefix
+# echo "Entering orc source directory..."
+# cd orc
+# patch -p1 < /tmp/orc.patch
+# mkdir orc_prefix
+# export ORC_PREFIX=$(pwd)/orc_prefix
 
-mkdir -p build
-cd build
+# mkdir -p build
+# cd build
 
-export PROTOBUF_PREFIX=$LIBPROTO_INSTALL
-export CMAKE_PREFIX_PATH=$LIBPROTO_INSTALL
-export LD_LIBRARY_PATH=$LIBPROTO_INSTALL/lib64
+# export PROTOBUF_PREFIX=$LIBPROTO_INSTALL
+# export CMAKE_PREFIX_PATH=$LIBPROTO_INSTALL
+# export LD_LIBRARY_PATH=$LIBPROTO_INSTALL/lib64
 
-export CC=$(which gcc)
-export CXX=$(which g++)
-export GCC=$CC
-export GXX=$CXX
+# export CC=$(which gcc)
+# export CXX=$(which g++)
+# export GCC=$CC
+# export GXX=$CXX
 
-export HOST=$(uname)-$(uname -m)
-export HOST=$(uname)-$(uname -m)
+# export HOST=$(uname)-$(uname -m)
+# export HOST=$(uname)-$(uname -m)
 
-CPPFLAGS="${CPPFLAGS} -Wl,-rpath,$VIRTUAL_ENV_PATH/**/lib"
+# CPPFLAGS="${CPPFLAGS} -Wl,-rpath,$VIRTUAL_ENV_PATH/**/lib"
 
 
-declare -a _CMAKE_EXTRA_CONFIG
-if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
-    _CMAKE_EXTRA_CONFIG+=(-DHAS_PRE_1970_EXITCODE=0)
-    _CMAKE_EXTRA_CONFIG+=(-DHAS_PRE_1970_EXITCODE__TRYRUN_OUTPUT=)
-    _CMAKE_EXTRA_CONFIG+=(-DHAS_POST_2038_EXITCODE=0)
-    _CMAKE_EXTRA_CONFIG+=(-DHAS_POST_2038_EXITCODE__TRYRUN_OUTPUT=)
-fi
-if [[ ${HOST} =~ .*darwin.* ]]; then
-    _CMAKE_EXTRA_CONFIG+=(-DCMAKE_AR=${AR})
-    _CMAKE_EXTRA_CONFIG+=(-DCMAKE_RANLIB=${RANLIB})
-    _CMAKE_EXTRA_CONFIG+=(-DCMAKE_LINKER=${LD})
-fi
-if [[ ${HOST} =~ .*Linux.* ]]; then
-    CXXFLAGS="${CXXFLAGS//-std=c++17/-std=c++11}"
-    LIBPTHREAD=$(find ${PREFIX} -name "libpthread.so")
-    _CMAKE_EXTRA_CONFIG+=(-DPTHREAD_LIBRARY=${LIBPTHREAD})
-fi
+# declare -a _CMAKE_EXTRA_CONFIG
+# if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
+#     _CMAKE_EXTRA_CONFIG+=(-DHAS_PRE_1970_EXITCODE=0)
+#     _CMAKE_EXTRA_CONFIG+=(-DHAS_PRE_1970_EXITCODE__TRYRUN_OUTPUT=)
+#     _CMAKE_EXTRA_CONFIG+=(-DHAS_POST_2038_EXITCODE=0)
+#     _CMAKE_EXTRA_CONFIG+=(-DHAS_POST_2038_EXITCODE__TRYRUN_OUTPUT=)
+# fi
+# if [[ ${HOST} =~ .*darwin.* ]]; then
+#     _CMAKE_EXTRA_CONFIG+=(-DCMAKE_AR=${AR})
+#     _CMAKE_EXTRA_CONFIG+=(-DCMAKE_RANLIB=${RANLIB})
+#     _CMAKE_EXTRA_CONFIG+=(-DCMAKE_LINKER=${LD})
+# fi
+# if [[ ${HOST} =~ .*Linux.* ]]; then
+#     CXXFLAGS="${CXXFLAGS//-std=c++17/-std=c++11}"
+#     LIBPTHREAD=$(find ${PREFIX} -name "libpthread.so")
+#     _CMAKE_EXTRA_CONFIG+=(-DPTHREAD_LIBRARY=${LIBPTHREAD})
+# fi
 
-CPPFLAGS="${CPPFLAGS} -Wl,-rpath,$VIRTUAL_ENV_PATH/**/lib"
-echo "Running cmake to configure the build for orc..."
-cmake ${CMAKE_ARGS} \
-    -DCMAKE_PREFIX_PATH=$ORC_PREFIX \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DBUILD_SHARED_LIBS=ON \
-    -DBUILD_JAVA=False \
-    -DLZ4_HOME=/usr \
-    -DZLIB_HOME=/usr \
-    -DZSTD_HOME=/usr/local \
-    -DCMAKE_POLICY_DEFAULT_CMP0074=NEW \
-    -DProtobuf_ROOT=$PROTOBUF_PREFIX \
-    -DPROTOBUF_HOME=$PROTOBUF_PREFIX \
-    -DPROTOBUF_EXECUTABLE=$PROTOBUF_PREFIX/bin/protoc \
-    -DSNAPPY_HOME=$SNAPPY_PREFIX \
-    -DBUILD_LIBHDFSPP=NO \
-    -DBUILD_CPP_TESTS=OFF \
-    -DCMAKE_INSTALL_PREFIX=$ORC_PREFIX \
-    -DCMAKE_C_COMPILER=$(type -p ${CC})     \
-    -DCMAKE_CXX_COMPILER=$(type -p ${CXX})  \
-    -DCMAKE_C_FLAGS="$CFLAGS"  \
-    -DCMAKE_CXX_FLAGS="$CXXFLAGS -Wno-unused-parameter" \
-    "${_CMAKE_EXTRA_CONFIG[@]}" \
-    -GNinja ..
+# CPPFLAGS="${CPPFLAGS} -Wl,-rpath,$VIRTUAL_ENV_PATH/**/lib"
+# echo "Running cmake to configure the build for orc..."
+# cmake ${CMAKE_ARGS} \
+#     -DCMAKE_PREFIX_PATH=$ORC_PREFIX \
+#     -DCMAKE_BUILD_TYPE=Release \
+#     -DBUILD_SHARED_LIBS=ON \
+#     -DBUILD_JAVA=False \
+#     -DLZ4_HOME=/usr \
+#     -DZLIB_HOME=/usr \
+#     -DZSTD_HOME=/usr/local \
+#     -DCMAKE_POLICY_DEFAULT_CMP0074=NEW \
+#     -DProtobuf_ROOT=$PROTOBUF_PREFIX \
+#     -DPROTOBUF_HOME=$PROTOBUF_PREFIX \
+#     -DPROTOBUF_EXECUTABLE=$PROTOBUF_PREFIX/bin/protoc \
+#     -DSNAPPY_HOME=$SNAPPY_PREFIX \
+#     -DBUILD_LIBHDFSPP=NO \
+#     -DBUILD_CPP_TESTS=OFF \
+#     -DCMAKE_INSTALL_PREFIX=$ORC_PREFIX \
+#     -DCMAKE_C_COMPILER=$(type -p ${CC})     \
+#     -DCMAKE_CXX_COMPILER=$(type -p ${CXX})  \
+#     -DCMAKE_C_FLAGS="$CFLAGS"  \
+#     -DCMAKE_CXX_FLAGS="$CXXFLAGS -Wno-unused-parameter" \
+#     "${_CMAKE_EXTRA_CONFIG[@]}" \
+#     -GNinja ..
 
-ninja
-echo  "Installing orc..."
-ninja install
+# ninja
+# echo  "Installing orc..."
+# ninja install
 
-cd $WORKDIR
+# cd $WORKDIR
 
 
 ################### boost_cpp installing ##########################
@@ -412,6 +412,100 @@ rm "${BOOST_PREFIX}/include/boost/python.hpp"
 rm -r "${BOOST_PREFIX}/include/boost/python"
 
 cd $WORKDIR
+
+
+################ thrift_cpp  installing ##############
+cd thrift
+Source_DIR=$(pwd)
+
+mkdir thrit-prefix
+export THRIFT_PREFIX=$Source_DIR/thrit-prefix
+
+export BOOST_ROOT=${BOOST_PREFIX}
+export ZLIB_ROOT=/usr
+export LIBEVENT_ROOT=/usr
+
+export OPENSSL_ROOT=/usr
+export OPENSSL_ROOT_DIR=/usr
+
+./bootstrap.sh
+echo "Configuring thrift-cpp installation..."
+./configure --prefix=$THRIFT_PREFIX \
+    --with-python=no \
+    --with-py3=no \
+    --with-ruby=no \
+    --with-java=no \
+    --with-kotlin=no \
+    --with-erlang=no \
+    --with-nodejs=no \
+    --with-c_glib=no \
+    --with-haxe=no \
+    --with-rs=no \
+    --with-cpp=yes \
+    --with-PACKAGE=yes \
+    --with-zlib=$ZLIB_ROOT \
+    --with-libevent=$LIBEVENT_ROOT \
+    --with-boost=$BOOST_ROOT \
+    --with-openssl=$OPENSSL_ROOT \
+    --enable-tests=no \
+    --enable-tutorial=no 
+
+echo "Compiling the source code for thrift-cpp..."
+make -j$(nproc)
+echo  "Installing thrift_cpp..."
+make install
+cd $WORKDIR
+
+
+############### grpc_cpp installing ####################
+cd grpc
+mkdir grpc-prefix
+export GRPC_PREFIX=$(pwd)/grpc-prefix
+
+AR=`which ar`
+RANLIB=`which ranlib`
+
+PROTOC_BIN=$LIBPROTO_INSTALL/bin/protoc
+PROTOBUF_SRC=$LIBPROTO_INSTALL
+
+export CMAKE_PREFIX_PATH="$C_ARES_PREFIX;$RE2_PREFIX;$LIBPROTO_INSTALL"
+
+export LD_LIBRARY_PATH=$LIBPROTO_INSTALL/lib64:${LD_LIBRARY_PATH}
+
+target_platform=$(uname)-$(uname -m)
+
+if [[ "${target_platform}" == osx* ]]; then
+  export CMAKE_ARGS="${CMAKE_ARGS} -DCMAKE_CXX_STANDARD=14"
+else
+  export CMAKE_ARGS="${CMAKE_ARGS} -DCMAKE_CXX_STANDARD=17"
+fi
+
+mkdir -p build-cpp
+pushd build-cpp
+echo "Running cmake to configure the build for grpc-cpp...."
+cmake ${CMAKE_ARGS} ..  \
+      -GNinja \
+      -DBUILD_SHARED_LIBS=ON \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=$GRPC_PREFIX \
+      -DgRPC_CARES_PROVIDER="package" \
+      -DgRPC_GFLAGS_PROVIDER="package" \
+      -DgRPC_PROTOBUF_PROVIDER="package" \
+      -DProtobuf_ROOT=$PROTOBUF_SRC \
+      -DgRPC_SSL_PROVIDER="package" \
+      -DgRPC_ZLIB_PROVIDER="package" \
+      -DgRPC_ABSL_PROVIDER="package" \
+      -DgRPC_RE2_PROVIDER="package" \
+      -DCMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH \
+      -DCMAKE_AR=${AR} \
+      -DCMAKE_RANLIB=${RANLIB} \
+      -DCMAKE_VERBOSE_MAKEFILE=ON \
+      -DProtobuf_PROTOC_EXECUTABLE=$PROTOC_BIN
+echo  "Installing grpc_cpp..."
+ninja install -v
+popd
+cd $WORKDIR
+
 
 #######################################################
 # Build Pyarrow  (Python package)

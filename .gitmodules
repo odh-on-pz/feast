@@ -37,3 +37,9 @@
 [submodule "sdk/python/feast/infra/feature_servers/multicloud/orc"]
 	path = sdk/python/feast/infra/feature_servers/multicloud/orc
 	url = https://github.com/apache/orc.git
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/thrift"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/thrift
+	url = https://github.com/apache/thrift
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/grpc"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/grpc
+	url = https://github.com/grpc/grpc
