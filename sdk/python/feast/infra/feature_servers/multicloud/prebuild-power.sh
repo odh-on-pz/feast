@@ -33,7 +33,7 @@ echo "Entering rapidson source directory..."
 cd rapidjson
 mkdir build && cd build
 echo "Running cmake to configure the rapidjson build..."
-cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local -DRAPIDJSON_BUILD_TESTS=OFF
 echo "Compiling the source code for rapidjson..."
 make -j$(nproc)
 echo "Installing rapidjson"
