@@ -17,3 +17,7 @@ artifacts:
   - download_url: "https://raw.githubusercontent.com/ppc64le/build-scripts/refs/heads/master/o/orc/orc.patch"
     checksum: "sha256:be350a38811c8d405a2601f7ef62e5d4348e0fb1b826a9c0f91b6928b00a30f0"
     filename: "orc.patch"
+
+  - download_url: "https://archive.apache.org/dist/orc/orc-format-1.0.0/orc-format-1.0.0.tar.gz"
+    checksum: "sha256:739fae5ff94b1f812b413077280361045bf92e510ef04b34a610e23a945d8cd5"
+    filename: "orc-format-1.0.0.tar.gz"

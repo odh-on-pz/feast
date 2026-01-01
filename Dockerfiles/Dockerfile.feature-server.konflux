@@ -31,7 +31,8 @@ COPY OpenBLAS ./OpenBLAS
 RUN cp /cachi2/output/deps/generic/boost-1.81.0.tar.gz /tmp/ \
  && cp /cachi2/output/deps/generic/flex-2.6.4.tar.gz /tmp/ \
  && cp /cachi2/output/deps/generic/bison-3.8.2.tar.gz /tmp/ \
- && cp /cachi2/output/deps/generic/orc.patch /tmp/
+ && cp /cachi2/output/deps/generic/orc.patch /tmp/ \
+ && cp /cachi2/output/deps/generic/orc-format-1.0.0.tar.gz /tmp/
 
 # Extract (Power only)
 RUN if [ "$(uname -m)" = "ppc64le" ]; then \
