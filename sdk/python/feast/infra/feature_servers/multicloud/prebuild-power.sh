@@ -20,6 +20,7 @@ CMAKE_REQUIRED_VERSION=3.30.5
 : "${CONDA_BUILD_CROSS_COMPILATION:=}"
 : "${PREFIX:=}"
 : "${FFLAGS:=}"
+: "${build_type:=cpu}"
 
 dnf install -y gcc-toolset-13 make cmake ninja-build libomp-devel \
                git python${PYTHON_VERSION} python${PYTHON_VERSION}-devel python${PYTHON_VERSION}-pip \
