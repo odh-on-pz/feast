@@ -340,7 +340,6 @@ fi
 CPPFLAGS="${CPPFLAGS} -Wl,-rpath,$VIRTUAL_ENV_PATH/**/lib"
 echo "Running cmake to configure the build for orc..."
 cmake ${CMAKE_ARGS} \
-    -DORC_FORMAT_ARCHIVE=$ORC_FORMAT_TARBALL \
     -DCMAKE_PREFIX_PATH=$ORC_PREFIX \
     -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_SHARED_LIBS=ON \
