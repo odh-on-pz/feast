@@ -738,7 +738,8 @@ else
 fi
 
 cd python
-pip install .
+export BUILD_TYPE=release
+python${PYTHON_VERSION} setup.py build_ext --build-type=$BUILD_TYPE --bundle-arrow-cpp bdist_wheel
 
 cat <<EOF >/etc/ld.so.conf.d/arrow-deps.conf
 ${SNAPPY_PREFIX}/lib
