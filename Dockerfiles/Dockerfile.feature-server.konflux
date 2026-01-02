@@ -50,20 +50,15 @@ RUN if [ "$(uname -m)" = "ppc64le" ]; then \
         echo "Non-Power architecture detected; skipping Power prebuild"; \
     fi
 
-COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
-
-# modify permissions to support running with a random uid
-RUN chmod g+w $(python -c "import feast.ui as ui; print(ui.__path__)" | tr -d "[']")/build/projects-list.json
+# Verify PyArrow installation
+RUN set -eux; \
+    python -c "import pyarrow; print(pyarrow.__version__)"; \
+    python -c 'import pyarrow.lib as _lib; print(_lib.__name__)'; \
+    python -c 'import pyarrow.parquet as parquet; print(parquet.__name__)'; \
+    python -c 'import pyarrow.dataset as dataset; print(dataset.__name__)'; \
+    python -c 'import pyarrow.flight as flight; print(flight.__name__)'; \
+    python -c 'import pyarrow.substrait as substrait; print(substrait.__name__)'
 
 # default user
 USER 1001
-
-LABEL com.redhat.component="odh-feature-server" \
-      name="odh-feature-server-rhel9" \
-      description="odh-feature-server" \
-      summary="odh-feature-server" \
-      io.openshift.expose-services="" \
-      io.k8s.display-name="odh-feature-server" \
-      io.k8s.description="odh-feature-server"
 

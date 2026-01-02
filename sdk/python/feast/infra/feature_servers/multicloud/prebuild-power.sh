@@ -740,6 +740,8 @@ fi
 cd python
 export BUILD_TYPE=release
 python${PYTHON_VERSION} setup.py build_ext --build-type=$BUILD_TYPE --bundle-arrow-cpp bdist_wheel
+ls dist/*.whl >/dev/null
+cp -v dist/*.whl /wheelhouse/
 
 cat <<EOF >/etc/ld.so.conf.d/arrow-deps.conf
 ${SNAPPY_PREFIX}/lib
