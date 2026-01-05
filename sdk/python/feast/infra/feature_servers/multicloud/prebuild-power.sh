@@ -602,6 +602,20 @@ export CXX=$(which g++)
 export CMAKE_PREFIX_PATH=$C_ARES_PREFIX:$LIBPROTO_INSTALL:$RE2_PREFIX:$GRPC_PREFIX:$ORC_PREFIX:$BOOST_PREFIX:${UTF8PROC_PREFIX}:$THRIFT_PREFIX:$SNAPPY_PREFIX:/usr
 export LD_LIBRARY_PATH=$GRPC_PREFIX/lib:$LIBPROTO_INSTALL/lib64
 
+SUBSTRAIT_LOCAL_DIR=/tmp/substrait_local
+mkdir -p "$SUBSTRAIT_LOCAL_DIR"
+tar -xzf /tmp/v0.44.0.tar.gz -C "$SUBSTRAIT_LOCAL_DIR" --strip-components=1
+
+sed -i '/externalproject_add *(substrait_ep/,/)/c\
+externalproject_add(substrait_ep\
+  SOURCE_DIR "'"$SUBSTRAIT_LOCAL_DIR"'"\
+  DOWNLOAD_COMMAND ""\
+  UPDATE_COMMAND ""\
+  CONFIGURE_COMMAND ""\
+  BUILD_COMMAND ""\
+  INSTALL_COMMAND ""\
+)' cpp/cmake_modules/ThirdpartyToolchain.cmake
+
 mkdir cpp/build
 pushd cpp/build
 
