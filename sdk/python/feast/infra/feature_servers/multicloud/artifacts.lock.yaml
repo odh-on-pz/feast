@@ -1,9 +1,27 @@
 metadata:
   version: "1.0"
 
-artifacts: []
+artifacts:
+  - download_url: "https://github.com/boostorg/boost/releases/download/boost-1.81.0/boost-1.81.0.tar.gz"
+    checksum: "sha256:121da556b718fd7bd700b5f2e734f8004f1cfa78b7d30145471c526ba75a151c"
+    filename: "boost-1.81.0.tar.gz"
 
-# NOTE:
-# Hermeto/Cachi2 must NOT fetch non-RH artifacts (e.g., GitHub tarballs).
-# DuckDB and Apache Arrow are now built via git clone.
+  - download_url: "https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz"
+    checksum: "sha256:e87aae032bf07c26f85ac0ed3250998c37621d95f8bd748b31f15b33c45ee995"
+    filename: "flex-2.6.4.tar.gz"
 
+  - download_url: "https://mirrors.cloud.tencent.com/gnu/bison/bison-3.8.2.tar.gz"
+    checksum: "sha256:06c9e13bdf7eb24d4ceb6b59205a4f67c2c7e7213119644430fe82fbd14a0abb"
+    filename: "bison-3.8.2.tar.gz"
+
+  - download_url: "https://raw.githubusercontent.com/ppc64le/build-scripts/refs/heads/master/o/orc/orc.patch"
+    checksum: "sha256:be350a38811c8d405a2601f7ef62e5d4348e0fb1b826a9c0f91b6928b00a30f0"
+    filename: "orc.patch"
+
+  - download_url: "https://archive.apache.org/dist/orc/orc-format-1.0.0/orc-format-1.0.0.tar.gz"
+    checksum: "sha256:739fae5ff94b1f812b413077280361045bf92e510ef04b34a610e23a945d8cd5"
+    filename: "orc-format-1.0.0.tar.gz"
+
+  - download_url: "https://github.com/substrait-io/substrait/archive/v0.44.0.tar.gz"
+    checksum: "sha256:f989a862f694e7dbb695925ddb7c4ce06aa6c51aca945105c075139aed7e55a2"
+    filename: "v0.44.0.tar.gz"
