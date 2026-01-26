@@ -1,0 +1,54 @@
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/pyarrow"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/pyarrow
+	url = https://github.com/apache/arrow.git
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/gflags"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/gflags
+	url = https://github.com/gflags/gflags.git
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/c-ares"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/c-ares
+	url = https://github.com/c-ares/c-ares.git
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/rapidjson"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/rapidjson
+	url = https://github.com/Tencent/rapidjson.git
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/xsimd"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/xsimd
+	url = https://github.com/xtensor-stack/xsimd.git
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/snappy"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/snappy
+	url = https://github.com/google/snappy.git
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/zstd"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/zstd
+	url = https://github.com/facebook/zstd.git
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/re2"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/re2
+	url = https://github.com/google/re2.git
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/utf8proc"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/utf8proc
+	url = https://github.com/JuliaStrings/utf8proc.git
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/protobuf"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/protobuf
+	url = https://github.com/protocolbuffers/protobuf.git
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/abseil-cpp"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/abseil-cpp
+	url = https://github.com/abseil/abseil-cpp.git
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/numpy"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/numpy
+	url = https://github.com/numpy/numpy.git
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/orc"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/orc
+	url = https://github.com/apache/orc.git
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/thrift"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/thrift
+	url = https://github.com/apache/thrift.git
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/grpc"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/grpc
+	url = https://github.com/grpc/grpc.git
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/OpenBLAS"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/OpenBLAS
+	url = https://github.com/OpenMathLib/OpenBLAS.git
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/duckdb"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/duckdb
+	url = https://github.com/duckdb/duckdb.git
+[submodule "sdk/python/feast/infra/feature_servers/multicloud/milvus-lite"]
+	path = sdk/python/feast/infra/feature_servers/multicloud/milvus-lite
+	url = https://github.com/milvus-io/milvus-lite.git

@@ -10,6 +10,41 @@ RUN dnf upgrade -y --refresh && dnf clean all
 COPY prebuild-power.sh /prebuild-power.sh
 RUN chmod +x /prebuild-power.sh
 
+COPY duckdb ./duckdb
+COPY pyarrow ./pyarrow
+COPY milvus-lite ./milvus-lite
+COPY numpy ./numpy
+COPY gflags ./gflags
+COPY c-ares ./c-ares
+COPY rapidjson ./rapidjson
+COPY xsimd ./xsimd
+COPY snappy ./snappy
+COPY zstd ./zstd
+COPY re2 ./re2
+COPY utf8proc ./utf8proc
+COPY protobuf ./protobuf
+COPY abseil-cpp ./abseil-cpp
+COPY orc ./orc
+COPY thrift ./thrift
+COPY grpc ./grpc
+COPY OpenBLAS ./OpenBLAS
+
+# Prefetched artifacts
+RUN cp /cachi2/output/deps/generic/boost-1.81.0.tar.gz /tmp/ \
+ && cp /cachi2/output/deps/generic/flex-2.6.4.tar.gz /tmp/ \
+ && cp /cachi2/output/deps/generic/bison-3.8.2.tar.gz /tmp/ \
+ && cp /cachi2/output/deps/generic/orc.patch /tmp/ \
+ && cp /cachi2/output/deps/generic/orc-format-1.0.0.tar.gz /tmp/ \
+ && cp /cachi2/output/deps/generic/v0.44.0.tar.gz /tmp/
+
+# Extract (Power only)
+RUN if [ "$(uname -m)" = "ppc64le" ]; then \
+        tar -xzf /tmp/boost-1.81.0.tar.gz -C /tmp; \
+        tar -xzf /tmp/flex-2.6.4.tar.gz -C /tmp; \
+        tar -xzf /tmp/bison-3.8.2.tar.gz -C /tmp; \
+    fi
+
+
 # Run prebuild script conditionally (Power only)
 RUN if [ "$(uname -m)" = "ppc64le" ]; then \
         echo "Power architecture detected. Running prebuild script..."; \
