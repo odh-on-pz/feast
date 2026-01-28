@@ -1,6 +1,8 @@
---index-url https://wheels.developerfirst.ibm.com/ppc64le/linux
+--index-url https://console.redhat.com/api/pypi/public-rhai/rhoai/3.2/cpu-ubi9/simple/
 
-pyarrow==20.0.0 \
-    --hash=sha256:9124d6a7e5a703d47013b08b44d0bb3a2eb824e9f492bde25e5b2f3c66caf549 \
-    --hash=sha256:ea4f6c4e6845d566dcdf2c269069052fac82153f54ffcb1cd84618daadfd3afd
+pyarrow==22.0.0 \
+    --hash=sha256:2d6cf45c5985492e4adf6a53899497bd6887279ad3e195ca1a0b4fcb885713ae \
+    --hash=sha256:34851b8bc2427ea89a830efe36f5d0a67dca09eb88ea71a69c6bd4b90cecd597 \
+    --hash=sha256:7182febf0ba3218515bee0157e707698662f19b856a875be8111302c4a4729d3 \
+    --hash=sha256:7f2d01be91dcf6ab8d01e876f29edfe05d748366a1d8dd1698682ca029258eea
     # via -r requirements-ppc64le.in
