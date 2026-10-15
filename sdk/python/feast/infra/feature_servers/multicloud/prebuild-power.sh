@@ -85,4 +85,5 @@ echo "Installed packages:"
 python3.12 -m pip list | grep -Ei \
     'duckdb|grpcio|pyarrow|milvus-lite|pandas|numpy'
 
+python3.12 -m pip uninstall -y Cython
 echo "[prebuild-power] completed successfully."
